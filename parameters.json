@@ -1,14 +1,14 @@
 {
     "ndir1": {
-      "nlag": 10,
-      "lag": 5.0,
-      "lagtol": 0.5,
-      "az": 90.0,
-      "aztol": 10.0,
-      "bandh": 1.0,
-      "dip": 0.0,
-      "dtol": 1.0,
-      "bandv": 2.0
+      "nlag1": 10,
+      "lag1": 5.0,
+      "lagtol1": 0.5,
+      "az1": 90.0,
+      "aztol1": 10.0,
+      "bandh1": 1.0,
+      "dip1": 0.0,
+      "dtol1": 1.0,
+      "bandv1": 2.0
     },
     "ndir2": {
       "nlag1": 10,
