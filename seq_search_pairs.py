@@ -1,173 +1,61 @@
-import math
-import numpy as np
 
-def search_pairs_lag_dir_reg(lag, ndir, dimx, dimy, dimz, nlag, ltol, azm, atol, bandwh, dip, dtol, epslon, search_neib_node, vr, nx, ny, nz):
-    eps_angle = 0.0000001
-    min_lags = lag[0]
+from seq_search_pairs_support import (
+    seq_calculate_azimuth_3d,
+    seq_calculate_dip_3d,
+    seq_horizontal_length_difference,
+    seq_vertical_length_associated_with_dip,
+    seq_point_position_before_or_equal_plane,
+    seq_point_position_after_or_equal_plane
+)
 
-    for i in range(1, ndir):
-        if min_lags > lag[i]:
-            min_lags = lag[i]
+def seq_search_pairs_gen(data_vector, dim, nlag, lag, lag_tol, azm, azm_tol, bandwh, dip, dip_tol, bandwv):
+    pairs = []
 
-    if dimx != 0:
-        pasx = max(dimx / (nx - 1), min_lags)
-    if dimy != 0:
-        pasy = max(dimy / (ny - 1), min_lags)
-    if dimz != 0:
-        pasz = max(dimz / (nz - 1), min_lags)
-
-    if dimx != 0:
-        pasx = dimx / (nx - 1)
-    if dimy != 0:
-        pasy = dimy / (ny - 1)
-    if dimz != 0:
-        pasz = dimz / (nz - 1)
-    
-    max_ = nlag[0]
-    nlag_accep = 0
-    for loopd in range(1, ndir):
-        if max_ < nlag[loopd]:
-            max_ = nlag[loopd]
-
-    if max_ < ndir:
-        max_ = ndir
-    max_lag = max_
-
-    for loopd in range(ndir):
-        ltol[loopd] = ltol[loopd] * lag[loopd]
-
-    node_nlag = np.zeros((ndir, nd), dtype=int)
-    node_nlag_list = np.zeros((nd, ndir, 1 * max_ + 1, 3), dtype=int)
-
-    for loopd in range(ndir):
-        azmuth = (90 - azm[loopd]) * math.pi / 180
-        uvxazm[loopd] = math.cos(azmuth)
-        if abs(uvxazm[loopd]) < eps_angle:
-            uvxazm[loopd] = 0
-        uvyazm[loopd] = math.sin(azmuth)
-        if abs(uvyazm[loopd]) < eps_angle:
-            uvyazm[loopd] = 0
-        if atol[loopd] <= 0:
-            csatol[loopd] = math.cos(45 * math.pi / 180)
-        else:
-            csatol[loopd] = math.cos(atol[loopd] * math.pi / 180)
-
-        declin = (90 - dip[loopd]) * math.pi / 180
-        uvzdec[loopd] = math.cos(declin)
-        if abs(uvzdec[loopd]) < eps_angle:
-            uvzdec[loopd] = 0
-        uvhdec[loopd] = math.sin(declin)
-        if abs(uvhdec[loopd]) < eps_angle:
-            uvhdec[loopd] = 0
-        if dtol[loopd] <= 0:
-            csdtol[loopd] = math.cos(45 * math.pi / 180)
-        else:
-            csdtol[loopd] = math.cos(dtol[loopd] * math.pi / 180)
-        dismxs[loopd] = ((nlag[loopd] + 0.5 - epslon) * lag[loopd]) ** 2
-
-    for loopn1 in range(nd):
-        p1 = loopn1
-        n_voi = 0
-        table = np.zeros(150, dtype=int)
-        search_neib_node(loopn1, n_voi, table)
-
-        for loopn2 in range(n_voi + 1):
-            p2 = table[loopn2]
-            dx = vr[p2][0] - vr[p1][0]
-            dy = vr[p2][1] - vr[p1][1]
-            dz = vr[p2][2] - vr[p1][2]
-            dxs = dx * dx
-            dys = dy * dy
-            dzs = dz * dz
-            hs = dxs + dys + dzs
-            tes = 0
-
-            for loopd in range(ndir):
-                if hs <= dismxs[loopd]:
-                    tes = 1
-                    break
-            if tes != 1:
-                continue
-
-            if hs <= 0:
-                hs = 0
-            h = math.sqrt(hs)
-
-            for loopd in range(ndir):
-                dxy = 0
-                if (dxs + dys) > 0:
-                    dxy = dxs + dys
-                dxy = math.sqrt(dxy)
-                if dxy < epslon:
-                    dcazm = 1
-                else:
-                    dcazm = (dx * uvxazm[loopd] + dy * uvyazm[loopd]) / dxy
-                if dcazm < csatol[loopd]:
-                    continue
-
-                if dcazm < 0:
-                    dxy = -dxy
-                if lagbeg == 1:
-                    dcdec = 0
-                else:
-                    dcdec = (dxy * uvhdec[loopd] + dz * uvzdec[loopd]) / h
-                    if dcdec < csdtol[loopd]:
+    # for each points
+    for p in data_vector:
+        point_id = p[0]
+        # for each dimension (direction)
+        for dim_id in dim:
+            # for each potential pair
+            for n in range(1, nlag[dim_id] + 1):
+                for potential_pair in data_vector:
+                    # Select point_id
+                    potential_pair_id = potential_pair[0]
+                    
+                    #Ensure potential pair point is not itself
+                    if point_id == potential_pair_id:
                         continue
 
-                band = uvxazm[loopd] * dy - uvyazm[loopd] * dx
-                if abs(band) > bandwh[loopd]:
-                    continue
-
-                band = uvhdec[loopd] * dz - uvzdec[loopd] * dxy
-                if abs(band) > bandwd[loopd]:
-                    continue
-
-                if h <= epslon:
-                    lagbeg = 1
-                    lagend = 1
-                elif nlag[loopd] >= 2:
-                    lagbeg = -1
-                    lagend = -1
-                    ilag = 2
-                    a = abs(lag[loopd] * (ilag - 1) - ltol[loopd])
-                    b = abs(lag[loopd] * (ilag - 1) + ltol[loopd])
-                    if a <= h <= b:
-                        if lagbeg < 0:
-                            lagbeg = ilag
-                        lagend = ilag
-                    if lagend < 0:
+                    # Access the azimuth tolerence boundaries
+                    cal_azimuth = seq_calculate_azimuth_3d(p[1], p[2], p[3], potential_pair[1], potential_pair[2], potential_pair[3])
+                    if cal_azimuth > azm[dim_id] + azm_tol[dim_id] or cal_azimuth < azm[dim_id] - azm_tol[dim_id]:
                         continue
 
-                lagend = lagbeg
-                if lagend > nlag[loopd]:
-                    continue
+                    # Access the dip tolerence boundaries
+                    cal_dip = seq_calculate_dip_3d(p[1], p[2], p[3], potential_pair[1], potential_pair[2], potential_pair[3])
+                    if cal_dip > dip[dim_id] + dip_tol[dim_id] or cal_dip < dip[dim_id] - dip_tol[dim_id]:
+                        continue
+                    
+                    #Access the horizontal bandwidth boundaries
+                    cal_hor_length_diff = seq_horizontal_length_difference(p[1], p[2], p[3], potential_pair[1], potential_pair[2], potential_pair[3])
+                    if cal_hor_length_diff > bandwh[dim_id]:
+                        continue
+                    
+                    #Access the vertical bandwidth boundaries
+                    cal_ver_diff = seq_vertical_length_associated_with_dip(p[1], p[2], p[3], potential_pair[1], potential_pair[2], potential_pair[3])
+                    if cal_ver_diff > bandwv[dim_id]:
+                        continue
+                    
+                    #Access within the lag tolerance
+                    cal_within_max_lag_tol = seq_point_position_before_or_equal_plane(p[1], p[2], p[3], potential_pair[1], potential_pair[2], potential_pair[3], (n * lag[dim_id]) + lag_tol[dim_id], cal_azimuth, cal_dip)
+                    if not cal_within_max_lag_tol:
+                        continue
 
-                node_nlag[loopd][p1] += 1
-                node_nlag_list[p1][loopd][node_nlag[loopd][p1]][0] = lagend
-                node_nlag_list[p1][loopd][node_nlag[loopd][p1]][1] = p1
-                node_nlag_list[p1][loopd][node_nlag[loopd][p1]][2] = p2
+                    cal_within_min_lag_tol = seq_point_position_after_or_equal_plane(p[1], p[2], p[3], potential_pair[1], potential_pair[2], potential_pair[3], (n * lag[dim_id]) - lag_tol[dim_id], cal_azimuth, cal_dip)
+                    if not cal_within_min_lag_tol:
+                        continue
+                    
+                    #Add point to pairs
+                    pairs.append([point_id, dim_id, n, potential_pair_id])
 
-                if lagend != 1:
-                    for iter_lag_node in range(2, nlag[loopd] + 1):
-                        vzp = 0
-                        vxp = vr[p1][0] + iter_lag_node * (vr[p2][0] - vr[p1][0])
-                        vyp = vr[p1][1] + iter_lag_node * (vr[p2][1] - vr[p1][1])
-                        if dim == 3:
-                            vzp = vr[p1][2] + iter_lag_node * (vr[p2][2] - vr[p1][2])
-
-                        if (0 <= vxp <= dimx) and (0 <= vyp <= dimy) and (0 <= vzp <= dimz):
-                            loc1 = vxp / pasx + 1
-                            loc2 = vyp / pasy + 1
-                            if dim == 3:
-                                loc3 = vzp / pasz + 1
-                            p3 = loc1 + (loc2 - 1) * nx
-                            if dim == 3:
-                                p3 += (loc3 - 1) * nx * ny
-                            if (iter_lag_node + 1) > nlag[loopd]:
-                                break
-                            node_nlag[loopd][p1] += 1
-                            node_nlag_list[p1][loopd][node_nlag[loopd][p1]][0] = iter_lag_node + 1
-                            node_nlag_list[p1][loopd][node_nlag[loopd][p1]][1] = p1
-                            node_nlag_list[p1][loopd][node_nlag[loopd][p1]][2] = p3 - 1
-
-    return node_nlag, node_nlag_list
+    return pairs
