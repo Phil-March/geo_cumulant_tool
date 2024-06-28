@@ -56,6 +56,6 @@ def seq_search_pairs_gen(data_vector, dim, nlag, lag, lag_tol, azm, azm_tol, ban
                         continue
                     
                     #Add point to pairs
-                    pairs.append([point_id, dim_id, n, potential_pair_id])
+                    pairs.append([int(point_id), int(dim_id), int(n), int(potential_pair_id)])
 
     return pairs
