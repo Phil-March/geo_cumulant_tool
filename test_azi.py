@@ -1,5 +1,4 @@
 import numpy as np
-
 def seq_calculate_azimuth_3d(x1, y1, z1, x2, y2, z2):
     """
     Calculate the azimuth between two points in 3D space.
@@ -21,25 +20,8 @@ def seq_calculate_azimuth_3d(x1, y1, z1, x2, y2, z2):
 
     return azimuth_degrees
 
-def seq_calculate_dip_3d(x1, y1, z1, x2, y2, z2):
-    """
-    Calculate the dip (elevation angle) between two points (x1, y1, z1) and (x2, y2, z2) in 3D space
-    """
-    # Calculate the differences in coordinates
-    dx = x2 - x1
-    dy = y2 - y1
-    dz = z2 - z1
 
-    # Calculate the horizontal distance between the two points
-    horizontal_distance = np.sqrt(dx**2 + dy**2)
 
-    # Calculate the dip in radians
-    dip = np.arctan2(dz, horizontal_distance)
-
-    # Convert dip from radians to degrees
-    dip = np.degrees(dip)
-
-    return dip
 
 def distance_along_horizontal_bandwidth(x1, y1, z1, x2, y2, z2, azimuth, dip):
     """
@@ -68,8 +50,6 @@ def distance_along_horizontal_bandwidth(x1, y1, z1, x2, y2, z2, azimuth, dip):
     horizontal_distance = np.linalg.norm(perpendicular_vector)
 
     return horizontal_distance
-
-
 def distance_along_vertical_bandwidth(x1, y1, z1, x2, y2, z2, azimuth, dip):
     """
     Calculate the vertical distance perpendicular to the plane defined by azimuth and dip 
@@ -98,6 +78,18 @@ def distance_along_vertical_bandwidth(x1, y1, z1, x2, y2, z2, azimuth, dip):
 
     return vertical_distance
 
+# Example usage
+x1, y1, z1 = 0, 0, 0
+x2, y2, z2 = 10, 1, 5
+azimuth = 0
+dip = 0
+
+vertical_distance = distance_along_vertical_bandwidth(x1, y1, z1, x2, y2, z2, azimuth, dip)
+print(f"Vertical distance: {vertical_distance}")
+print(distance_along_horizontal_bandwidth(0,0,0,10,1,0,0,0))
+print(seq_calculate_azimuth_3d(0,0,0,10,1,0))
+print("------------------------/n")
+
 def seq_point_distance_to_shifted_plane(x1, y1, z1, x2, y2, z2, lag, azimuth, dip):
     """
     Calculate the distance from point (x2, y2, z2) to the plane defined by the initial point (x1, y1, z1),
@@ -123,5 +115,16 @@ def seq_point_distance_to_shifted_plane(x1, y1, z1, x2, y2, z2, lag, azimuth, di
 
     # Calculate the distance from the point to the shifted plane using the dot product
     distance = np.dot(vector_to_point, normal_vector) / np.linalg.norm(normal_vector)
+    print(f"Distance from point to shifted plane: {distance}")
 
     return distance
+
+# Example usage
+x1, y1, z1 = 0, 0, 0
+x2, y2, z2 = 12, 0, 0
+lag = 10
+azimuth = 0
+dip = 0
+
+distance = seq_point_distance_to_shifted_plane(x1, y1, z1, x2, y2, z2, lag, azimuth, dip)
+print(f"Distance from point to shifted plane: {distance}")
