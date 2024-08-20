@@ -19,11 +19,11 @@ def seq_search_pairs_gen(data_vector, dim, nlag, lag, lag_tol, azm, azm_tol, ban
                 for potential_pair in data_vector:
                     # Select point_id
                     potential_pair_id = potential_pair[0]
-                    print(f"Point_id : {point_id}, Potenital_id : {potential_pair_id}")
+                    #print(f"Point_id : {point_id}, Potenital_id : {potential_pair_id}")
                     
                     #Ensure potential pair point is not itself
                     if point_id == potential_pair_id:
-                        print("Was skipped due to same point")
+                        #print("Was skipped due to same point")
                         continue
                         
                     # Access the azimuth tolerence boundaries

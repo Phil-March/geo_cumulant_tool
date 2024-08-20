@@ -6,7 +6,7 @@ from seq_search_pairs import seq_search_pairs_gen
 # from par_search_pairs import par_search_pairs_gen
 
 # Load the CSV file into a DataFrame
-df = pd.read_csv('2d_data.csv')
+df = pd.read_csv('3d_data.csv')
 
 # Add the point_id column as the first column
 df.insert(0, 'point_id', range(1, len(df) + 1))
@@ -16,7 +16,7 @@ data_vector = df.to_numpy()
 # print(data_vector)
 
 file_name = 'parameters.json'
-ndir = 2
+ndir = 3
 
 def load_parameters(file_name, ndir):
     # Load JSON file
