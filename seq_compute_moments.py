@@ -1,10 +1,21 @@
 import pandas as pd
 import itertools
 
-
-def associate_grade(data_file, pairs_file):
-    # Load initial data
+def center_grades(data_file):
+    # Load the data
     df_data = pd.read_csv(data_file)
+    
+    # Compute the mean of the GRADE column
+    mean_grade = df_data['GRADE'].mean()
+
+    # Subtract the mean grade from each entry in the GRADE column
+    df_data['GRADE_centered'] = df_data['GRADE'] - mean_grade
+    
+    return df_data
+
+data_2d = center_grades('2d_data.csv')
+
+def associate_grade(df_data, pairs_file):
 
     # Add the point_id column as the first column
     df_data.insert(0, 'point_id', range(1, len(df_data) + 1))
@@ -24,63 +35,67 @@ def associate_grade(data_file, pairs_file):
 
     return df_pairs
 
-df_pairs = associate_grade('2d_data.csv', 'seq_pairs.json')
+df_pairs = associate_grade(data_2d, 'seq_pairs.json')
 
-def compute_moments_from_pairs(df_pairs, ndir, nlag_dir):
-    # Generate column names
-    columns = [f"dir_{i}_nlag" for i in range(len(ndir))]
+def compute_3rd_order_cumulant(df_pairs, nlag_dir):
+    # Generate column names for the two directions
+    columns = ['dir_0_nlag', 'dir_1_nlag']
 
     # Generate all combinations of values for each column
-    combinations = list(itertools.product(*[range(1, nlag + 1) for nlag in nlag_dir]))
+    combinations = list(itertools.product(range(1, nlag_dir[0] + 1), range(1, nlag_dir[1] + 1)))
 
-    # Create DataFrame
+    # Create DataFrame with the generated combinations
     df_generated = pd.DataFrame(combinations, columns=columns)
 
-    # Perform merges
-    result = df_generated.copy()
-    for i in range(len(ndir)):
-        suffix = f'_dir_{i}' if i > 0 else ''
-        result = result.merge(
-            df_pairs[df_pairs['dim_id'] == ndir[i]], 
-            left_on=f'dir_{i}_nlag', 
-            right_on='n', 
-            how='left',
-            suffixes=('', suffix)
-        )
-        
-        # Rename columns for each merge
-        result = result.rename(columns={
-            'point_id': f'point_id_dir_{i}',
-            'paired_point_id': f'paired_point_id_dir_{i}',
-            'paired_point_id_value': f'paired_point_id_value_dir_{i}'
-        })
+    # Merge for direction 0
+    result = df_generated.merge(
+        df_pairs[df_pairs['dim_id'] == 0], 
+        left_on='dir_0_nlag', 
+        right_on='n', 
+        how='left'
+    )
+    result = result.rename(columns={
+        'point_id': 'point_id_dir_0',
+        'paired_point_id': 'paired_point_id_dir_0',
+        'paired_point_id_value': 'paired_point_id_value_dir_0'
+    })
 
-    # Filter rows where all existing point_id_dir_X match
-    point_id_columns = [col for col in result.columns if col.startswith('point_id_dir_')]
-    if point_id_columns:
-        result = result.dropna(subset=point_id_columns)
-        result = result[result[point_id_columns].nunique(axis=1) == 1]
+    # Merge for direction 1
+    result = result.merge(
+        df_pairs[df_pairs['dim_id'] == 1], 
+        left_on='dir_1_nlag', 
+        right_on='n', 
+        how='left',
+        suffixes=('', '_dir_1')
+    )
+    result = result.rename(columns={
+        'point_id': 'point_id_dir_1',
+        'paired_point_id': 'paired_point_id_dir_1',
+        'paired_point_id_value': 'paired_point_id_value_dir_1'
+    })
+
+    # Filter rows where all point_id_dir_0 and point_id_dir_1 match
+    result = result.dropna(subset=['point_id_dir_0', 'point_id_dir_1'])
+    result = result[result['point_id_dir_0'] == result['point_id_dir_1']]
 
     # Select final columns
-    final_columns = columns + ['point_id_value'] + [col for col in result.columns if col.startswith('paired_point_id_dir_') or col.startswith('paired_point_id_value_dir_')]
+    final_columns = columns + ['point_id_value'] + [
+        'paired_point_id_dir_0', 'paired_point_id_value_dir_0',
+        'paired_point_id_dir_1', 'paired_point_id_value_dir_1'
+    ]
     result = result[final_columns]
 
-    # Add new column 'E'
-    result['E'] = result['point_id_value']
-    for col in result.columns:
-        if col.startswith('paired_point_id_value_dir_'):
-            result['E'] *= result[col]
+    # Add new column 'E' as the product of point_id_value and the paired_point_id_values
+    result['E'] = result['point_id_value'] * result['paired_point_id_value_dir_0'] * result['paired_point_id_value_dir_1']
 
-    # Group by all dir_X_nlag columns and average E
-    group_columns = [f'dir_{i}_nlag' for i in range(len(ndir))]
-    final_result = result.groupby(group_columns)['E'].mean().reset_index()
+    # Group by dir_0_nlag and dir_1_nlag columns and average E
+    final_result = result.groupby(columns)['E'].mean().reset_index()
     final_result = final_result.rename(columns={'E': 'average_E'})
 
     return final_result
 
-# Example usage:
-ndir = [0, 1]  # You can add more dimensions here
+
 nlag_dir = [10, 10]  # Adjust the number of lags for each dimension
 
-final_result = compute_moments_from_pairs(df_pairs, ndir, nlag_dir)
+final_result = compute_3rd_order_cumulant(df_pairs, nlag_dir)
 print(final_result)
