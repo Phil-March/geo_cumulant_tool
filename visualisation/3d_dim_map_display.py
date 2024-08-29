@@ -3,39 +3,46 @@ import pandas as pd
 import numpy as np
 import dash
 from dash import dcc, html
-from dash.dependencies import Input, Output
+from dash.dependencies import Input, Output, State
+import os
 
-# Generate manual data
-data = []
+# Directory containing the files
+output_dir = './output'
 
-# Iterate over dim_id from 0 to 2 and n from 1 to 16
-for dim_id in range(0, 3):
-    for n in range(1, 17):
-        cumulant_value = np.random.random()  # Random cumulant value
-        data.append([dim_id, n, cumulant_value])
+# List CSV or Excel files in the output directory
+file_options = [{'label': f, 'value': f} for f in os.listdir(output_dir) if f.endswith(('.csv', '.xls', '.xlsx'))]
 
-# Create DataFrame
-df_manual = pd.DataFrame(data, columns=['dim_id', 'n', 'cumulant'])
+# Function to read the selected file
+def read_file(filepath):
+    try:
+        if filepath.endswith('.csv'):
+            df = pd.read_csv(filepath)
+        elif filepath.endswith(('.xls', '.xlsx')):
+            df = pd.read_excel(filepath)
+        else:
+            return None
+    except Exception as e:
+        print(e)
+        return None
 
-# Filter data for dim_id
-df_dim0 = df_manual[df_manual['dim_id'] == 0]
-df_dim1 = df_manual[df_manual['dim_id'] == 1]
-df_dim2 = df_manual[df_manual['dim_id'] == 2]
-
-# Determine the min and max cumulant values for the fixed color scale
-cumulant_min = df_dim2['cumulant'].min()
-cumulant_max = df_dim2['cumulant'].max()
+    return df
 
 # Create the Dash app
 app = dash.Dash(__name__)
 
 app.layout = html.Div([
+    dcc.Dropdown(
+        id='file-dropdown',
+        options=file_options,
+        placeholder='Select a file',
+    ),
+    html.Div(id='output-file-selected'),
     dcc.Slider(
         id='n-slider',
-        min=df_dim2['n'].min().item(),
-        max=df_dim2['n'].max().item(),
+        min=1,
+        max=16,
         step=1,
-        value=df_dim2['n'].min().item(),
+        value=1,
         marks={i: str(i) for i in range(1, 17)},
         tooltip={"placement": "bottom", "always_visible": True}
     ),
@@ -43,45 +50,108 @@ app.layout = html.Div([
 ])
 
 @app.callback(
-    Output('heatmap', 'figure'),
-    Input('n-slider', 'value')
+    [Output('n-slider', 'min'),
+     Output('n-slider', 'max'),
+     Output('n-slider', 'value'),
+     Output('n-slider', 'marks'),
+     Output('n-slider', 'disabled'),
+     Output('output-file-selected', 'children')],
+    [Input('file-dropdown', 'value')]
 )
-def update_heatmap(selected_n):
-    # Filter data for dim_id 0 and 1 for the selected n value in dim_id 2
-    df_filtered_dim0 = df_manual[df_manual['dim_id'] == 0]
-    df_filtered_dim1 = df_manual[df_manual['dim_id'] == 1]
-    df_filtered_dim2 = df_manual[(df_manual['dim_id'] == 2) & (df_manual['n'] == selected_n)]
-    
-    # Create a pivot table to arrange the data into a grid
-    grid_data = np.zeros((df_dim0['n'].max(), df_dim1['n'].max()))
-    
-    for n in range(df_dim0['n'].min(), df_dim0['n'].max() + 1):
-        for m in range(df_dim1['n'].min(), df_dim1['n'].max() + 1):
-            cumulant_value_n = df_filtered_dim0[df_filtered_dim0['n'] == n]['cumulant'].values[0]
-            cumulant_value_m = df_filtered_dim1[df_filtered_dim1['n'] == m]['cumulant'].values[0]
-            cumulant_value_l = df_filtered_dim2['cumulant'].values[0]
-            grid_data[n-1, m-1] = (cumulant_value_n + cumulant_value_m + cumulant_value_l) / 3  # Averaging the values
+def update_slider_and_data(selected_file):
+    if selected_file is not None:
+        filepath = os.path.join(output_dir, selected_file)
+        df = read_file(filepath)
+        if df is not None:
+            num_columns = df.shape[1]
+            if num_columns == 3:
+                # 2D Case
+                n_min = df.iloc[:, 0].min()
+                n_max = df.iloc[:, 0].max()
+                marks = {i: str(i) for i in range(n_min, n_max + 1)}
+                slider_disabled = True
+                message = f"2D data detected. Slider fixed at n={n_min}"
+            elif num_columns == 4:
+                # 3D Case
+                n_min = df.iloc[:, 2].min()
+                n_max = df.iloc[:, 2].max()
+                marks = {i: str(i) for i in range(n_min, n_max + 1)}
+                slider_disabled = False
+                message = f"3D data detected. Use the slider to change layers."
+            else:
+                return 1, 16, 1, {i: str(i) for i in range(1, 17)}, True, "Invalid file format."
+            return n_min, n_max, n_min, marks, slider_disabled, message
+    return 1, 16, 1, {i: str(i) for i in range(1, 17)}, True, "Please select a valid file."
 
-    # Create the heatmap
-    fig = go.Figure(data=go.Heatmap(
-                       z=grid_data,
-                       x=list(range(df_dim0['n'].min(), df_dim0['n'].max() + 1)),
-                       y=list(range(df_dim1['n'].min(), df_dim1['n'].max() + 1)),
-                       colorscale='Viridis',
-                       zmin=cumulant_min,
-                       zmax=cumulant_max))
+@app.callback(
+    Output('heatmap', 'figure'),
+    [Input('n-slider', 'value'),
+     Input('file-dropdown', 'value')]
+)
+def update_heatmap(selected_n, selected_file):
+    if selected_file is not None:
+        filepath = os.path.join(output_dir, selected_file)
+        df = read_file(filepath)
+        if df is not None:
+            num_columns = df.shape[1]
+            if num_columns == 3:
+                # 2D Case
+                df_dim0 = df.iloc[:, 0]
+                df_dim1 = df.iloc[:, 1]
+                cumulant = df.iloc[:, 2]
 
-    # Update layout for better visualization and making the grid square
-    fig.update_layout(
-        title=f'Grid Mesh of Cumulant Values (n={selected_n} for dim_id=2)',
-        xaxis_title='N for Dim 0',
-        yaxis_title='N for Dim 1',
-        autosize=False,
-        width=550,  # Adjust the width as needed
-        height=550  # Adjust the height as needed
-    )
-    
-    return fig
+                grid_data = cumulant.values.reshape((df_dim0.max(), df_dim1.max()))
+
+                cumulant_min = cumulant.min()
+                cumulant_max = cumulant.max()
+
+                fig = go.Figure(data=go.Heatmap(
+                                   z=grid_data,
+                                   x=list(range(1, df_dim0.max() + 1)),
+                                   y=list(range(1, df_dim1.max() + 1)),
+                                   colorscale='Viridis',
+                                   zmin=cumulant_min,
+                                   zmax=cumulant_max))
+
+                fig.update_layout(
+                    title='Grid Mesh of Cumulant Values (2D)',
+                    xaxis_title='N for Dir 0',
+                    yaxis_title='N for Dir 1',
+                    autosize=False,
+                    width=550,
+                    height=550
+                )
+                return fig
+
+            elif num_columns == 4:
+                # 3D Case
+                df_dim0 = df[df.iloc[:, 2] == selected_n].iloc[:, 0]
+                df_dim1 = df[df.iloc[:, 2] == selected_n].iloc[:, 1]
+                cumulant = df[df.iloc[:, 2] == selected_n].iloc[:, 3]
+
+                grid_data = cumulant.values.reshape((df_dim0.max(), df_dim1.max()))
+
+                cumulant_min = df.iloc[:, 3].min()
+                cumulant_max = df.iloc[:, 3].max()
+
+                fig = go.Figure(data=go.Heatmap(
+                                   z=grid_data,
+                                   x=list(range(1, df_dim0.max() + 1)),
+                                   y=list(range(1, df_dim1.max() + 1)),
+                                   colorscale='Viridis',
+                                   zmin=cumulant_min,
+                                   zmax=cumulant_max))
+
+                fig.update_layout(
+                    title=f'Grid Mesh of Cumulant Values (n={selected_n} for 3D)',
+                    xaxis_title='N for Dir 0',
+                    yaxis_title='N for Dir 1',
+                    autosize=False,
+                    width=550,
+                    height=550
+                )
+                return fig
+    return go.Figure()
 
 if __name__ == '__main__':
     app.run_server(debug=True)
