@@ -1,5 +1,5 @@
 
-from seq_search_pairs_support import (
+from sequential_workflow.seq_search_pairs_support import (
     seq_calculate_azimuth_3d,
     seq_calculate_dip_3d,
     distance_along_horizontal_bandwidth,

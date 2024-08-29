@@ -1,7 +1,7 @@
 import cupy as cp
 import numpy as np
 from numba import cuda
-from par_search_pairs_support import (    
+from parallel_workflow.par_search_pairs_support import (    
     par_calculate_azimuth_3d,
     par_calculate_dip_3d,
     par_horizontal_length_difference,

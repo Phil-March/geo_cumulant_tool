@@ -2,7 +2,7 @@ import json
 import numpy as np
 import pandas as pd
 import time
-from seq_search_pairs import seq_search_pairs_gen
+from sequential_workflow.seq_search_pairs import seq_search_pairs_gen
 # from par_search_pairs import par_search_pairs_gen
 
 # Load the CSV file into a DataFrame

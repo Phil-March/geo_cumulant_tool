@@ -101,9 +101,6 @@ nlag_2dir = [10, 10]  # Adjust the number of lags for each dimension
 final_result = compute_3rd_order_cumulant(df_pairs, nlag_2dir)
 print(final_result)
 
-import pandas as pd
-import itertools
-
 def compute_4th_order_cumulant(df_pairs, nlag_dir):
     # Generate column names for the three directions
     columns = ['dir_0_nlag', 'dir_1_nlag', 'dir_2_nlag']
