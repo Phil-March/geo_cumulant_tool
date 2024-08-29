@@ -9,3 +9,18 @@ Welcome to the **Geostatistical Cumulant Tool** repository! This tool is designe
 - **Parallel and Sequential Execution**: Both the search pairing algorithm and cumulant computation can be executed in parallel or sequentially, providing flexibility based on your computational needs.
 - **Cumulant Maps Visualization**: Visualize third and fourth-order cumulant maps for insightful geostatistical analysis.
 
+## Requirements
+
+### Software Installation
+
+Before running the Geostatistical Computation Cumulant Tool, ensure that the following software is installed on your system:
+
+1. **Python 3.12.2**: This tool requires Python version 3.12.2 or higher. You can download and install it from the [official Python website](https://www.python.org/downloads/).
+2. **CUDA Toolkit**: For leveraging GPU acceleration (if using parallel execution), ensure that the CUDA Toolkit is installed. You can download it from the [NVIDIA website](https://developer.nvidia.com/cuda-toolkit).
+
+### Python Libraries
+
+In addition to the software requirements, the following Python libraries need to be installed. These libraries are not included by default with Python and must be installed via `pip`. You can install all required libraries using the command:
+
+```bash
+pip install pandas numpy cupy numba
