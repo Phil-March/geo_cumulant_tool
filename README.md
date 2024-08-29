@@ -9,6 +9,20 @@ Welcome to the **Geostatistical Cumulant Tool** repository! This tool is designe
 - **Parallel and Sequential Execution**: Both the search pairing algorithm and cumulant computation can be executed in parallel or sequentially, providing flexibility based on your computational needs.
 - **Cumulant Maps Visualization**: Visualize third and fourth-order cumulant maps for insightful geostatistical analysis.
 
+## Theory
+
+This section provides an overview of the theoretical concepts underlying the Geostatistical Computation Cumulant Tool, specifically focusing on the Search Pair Algorithm and Cumulant Computation.
+
+### Search Pair Algorithm
+
+The **Search Pair Algorithm** is a critical component of the tool, designed to efficiently identify and pair data points based on spatial relationships. In geostatistical analysis, the accurate pairing of data points is essential for the computation of cumulants, as it directly affects the statistical properties of the resulting models.
+
+#### Key Aspects of the Search Pair Algorithm:
+
+- **Efficiency**: The algorithm is optimized for both sequential and parallel execution, making it capable of handling large
+
+### Cumulant Computation
+
 ## Requirements
 
 ### Software Installation
