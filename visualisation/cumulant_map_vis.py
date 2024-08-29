@@ -6,25 +6,18 @@ from dash import dcc, html
 from dash.dependencies import Input, Output, State
 import os
 
-# Directory containing the files
-output_dir = './output'
+# Get the parent directory of the script
+parent_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Construct the path to the output directory
+output_dir = os.path.join(parent_dir, '..', 'output')
 
 # List CSV or Excel files in the output directory
 file_options = [{'label': f, 'value': f} for f in os.listdir(output_dir) if f.endswith(('.csv', '.xls', '.xlsx'))]
 
 # Function to read the selected file
 def read_file(filepath):
-    try:
-        if filepath.endswith('.csv'):
-            df = pd.read_csv(filepath)
-        elif filepath.endswith(('.xls', '.xlsx')):
-            df = pd.read_excel(filepath)
-        else:
-            return None
-    except Exception as e:
-        print(e)
-        return None
-
+    df = pd.read_csv(filepath)
     return df
 
 # Create the Dash app
