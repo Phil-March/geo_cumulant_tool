@@ -22,6 +22,7 @@ def associate_grade(df_data, pairs_file):
 
     # Load the JSON pairs data into a DataFrame
     df_pairs = pd.read_json(pairs_file)
+    print(df_pairs)
 
     # Merge df_pairs with df_data to get the values for point_id
     df_pairs = df_pairs.merge(df_data[['point_id', 'GRADE']], on='point_id', how='left')
@@ -90,12 +91,103 @@ def compute_3rd_order_cumulant(df_pairs, nlag_dir):
 
     # Group by dir_0_nlag and dir_1_nlag columns and average E
     final_result = result.groupby(columns)['E'].mean().reset_index()
-    final_result = final_result.rename(columns={'E': 'average_E'})
+    final_result = final_result.rename(columns={'E': 'mu_3'})
 
     return final_result
 
 
-nlag_dir = [10, 10]  # Adjust the number of lags for each dimension
+nlag_2dir = [10, 10]  # Adjust the number of lags for each dimension
 
-final_result = compute_3rd_order_cumulant(df_pairs, nlag_dir)
+final_result = compute_3rd_order_cumulant(df_pairs, nlag_2dir)
 print(final_result)
+
+import pandas as pd
+import itertools
+
+def compute_4th_order_cumulant(df_pairs, nlag_dir):
+    # Generate column names for the three directions
+    columns = ['dir_0_nlag', 'dir_1_nlag', 'dir_2_nlag']
+
+    # Generate all combinations of values for each column
+    combinations = list(itertools.product(range(1, nlag_dir[0] + 1), range(1, nlag_dir[1] + 1), range(1, nlag_dir[2] + 1)))
+
+    # Create DataFrame with the generated combinations
+    df_generated = pd.DataFrame(combinations, columns=columns)
+
+    # Merge for direction 0
+    result = df_generated.merge(
+        df_pairs[df_pairs['dim_id'] == 0], 
+        left_on='dir_0_nlag', 
+        right_on='n', 
+        how='left'
+    )
+    result = result.rename(columns={
+        'point_id': 'point_id_dir_0',
+        'paired_point_id': 'paired_point_id_dir_0',
+        'paired_point_id_value': 'paired_point_id_value_dir_0'
+    })
+
+    # Merge for direction 1
+    result = result.merge(
+        df_pairs[df_pairs['dim_id'] == 1], 
+        left_on='dir_1_nlag', 
+        right_on='n', 
+        how='left',
+        suffixes=('', '_dir_1')
+    )
+    result = result.rename(columns={
+        'point_id': 'point_id_dir_1',
+        'paired_point_id': 'paired_point_id_dir_1',
+        'paired_point_id_value': 'paired_point_id_value_dir_1'
+    })
+
+    # Merge for direction 2
+    result = result.merge(
+        df_pairs[df_pairs['dim_id'] == 2], 
+        left_on='dir_2_nlag', 
+        right_on='n', 
+        how='left',
+        suffixes=('', '_dir_2')
+    )
+    result = result.rename(columns={
+        'point_id': 'point_id_dir_2',
+        'paired_point_id': 'paired_point_id_dir_2',
+        'paired_point_id_value': 'paired_point_id_value_dir_2'
+    })
+
+    # Filter rows where all point_id_dir_0, point_id_dir_1, and point_id_dir_2 match
+    result = result.dropna(subset=['point_id_dir_0', 'point_id_dir_1', 'point_id_dir_2'])
+    result = result[(result['point_id_dir_0'] == result['point_id_dir_1']) & 
+                    (result['point_id_dir_1'] == result['point_id_dir_2'])]
+
+    # Select final columns
+    final_columns = columns + ['point_id_value'] + [
+        'paired_point_id_dir_0', 'paired_point_id_value_dir_0',
+        'paired_point_id_dir_1', 'paired_point_id_value_dir_1',
+        'paired_point_id_dir_2', 'paired_point_id_value_dir_2'
+    ]
+    result = result[final_columns]
+
+    # Compute mu_4 = E[Z(u)⋅Z(u+h1)⋅Z(u+h2)⋅Z(u+h3)]
+    result['E_0'] = (result['point_id_value'] * result['paired_point_id_value_dir_0'] * result['paired_point_id_value_dir_1'] * result['paired_point_id_value_dir_2'])
+
+    # Compute E[Z(u),Z(u + h1)] ⋅ E[Z(u + h2),Z(u + h3)]
+    result['E_1'] = (result['point_id_value'] * result['paired_point_id_value_dir_0']).mean() * \
+                    (result['paired_point_id_value_dir_1'] * result['paired_point_id_value_dir_2']).mean()
+
+    # Compute E[Z(u),Z(u + h2)] ⋅ E[Z(u + h1),Z(u + h3)]
+    result['E_2'] = (result['point_id_value'] * result['paired_point_id_value_dir_1']).mean() * \
+                    (result['paired_point_id_value_dir_0'] * result['paired_point_id_value_dir_2']).mean()
+
+    # Compute E[Z(u),Z(u + h3)] ⋅ E[Z(u+ h1),Z(u + h2)]
+    result['E_3'] = (result['point_id_value'] * result['paired_point_id_value_dir_2']).mean() * \
+                    (result['paired_point_id_value_dir_0'] * result['paired_point_id_value_dir_1']).mean()
+
+    # Compute the fourth-order cumulant: 
+    # mu_4 - (E_1 + E_2 + E_3)
+    result['cumulant_4'] = result['E_0'] - (result['E_1'] + result['E_2'] + result['E_3'])
+
+    # Group by dir_0_nlag, dir_1_nlag, and dir_2_nlag columns and average the cumulant
+    final_result = result.groupby(columns)['cumulant_4'].mean().reset_index()
+
+    return final_result
