@@ -13,16 +13,13 @@ def center_grades(data_file):
     
     return df_data
 
-data_2d = center_grades('2d_data.csv')
 
 def associate_grade(df_data, pairs_file):
-
     # Add the point_id column as the first column
     df_data.insert(0, 'point_id', range(1, len(df_data) + 1))
 
     # Load the JSON pairs data into a DataFrame
     df_pairs = pd.read_json(pairs_file)
-    print(df_pairs)
 
     # Merge df_pairs with df_data to get the values for point_id
     df_pairs = df_pairs.merge(df_data[['point_id', 'GRADE']], on='point_id', how='left')
@@ -36,9 +33,15 @@ def associate_grade(df_data, pairs_file):
 
     return df_pairs
 
-df_pairs = associate_grade(data_2d, 'seq_pairs.json')
 
-def compute_3rd_order_cumulant(df_pairs, nlag_dir):
+def compute_3rd_order_cumulant(df_pairs):
+    # Determine the maximum values of n for each dim_id (0 and 1)
+    max_n_dim_0 = df_pairs[df_pairs['dim_id'] == 0]['n'].max()
+    max_n_dim_1 = df_pairs[df_pairs['dim_id'] == 1]['n'].max()
+    
+    # Use the maximum n values to define the nlag_dir
+    nlag_dir = [max_n_dim_0, max_n_dim_1]
+
     # Generate column names for the two directions
     columns = ['dir_0_nlag', 'dir_1_nlag']
 
@@ -91,17 +94,20 @@ def compute_3rd_order_cumulant(df_pairs, nlag_dir):
 
     # Group by dir_0_nlag and dir_1_nlag columns and average E
     final_result = result.groupby(columns)['E'].mean().reset_index()
-    final_result = final_result.rename(columns={'E': 'mu_3'})
+    final_result = final_result.rename(columns={'E': 'k_3'})
 
     return final_result
 
 
-nlag_2dir = [10, 10]  # Adjust the number of lags for each dimension
-
-final_result = compute_3rd_order_cumulant(df_pairs, nlag_2dir)
-print(final_result)
-
 def compute_4th_order_cumulant(df_pairs, nlag_dir):
+    # Determine the maximum values of n for each dim_id
+    max_n_dim_0 = df_pairs[df_pairs['dim_id'] == 0]['n'].max()
+    max_n_dim_1 = df_pairs[df_pairs['dim_id'] == 1]['n'].max()
+    max_n_dim_2 = df_pairs[df_pairs['dim_id'] == 2]['n'].max()
+    
+    # Use the maximum n values to define the nlag_dir
+    nlag_dir = [max_n_dim_0, max_n_dim_1, max_n_dim_2]
+
     # Generate column names for the three directions
     columns = ['dir_0_nlag', 'dir_1_nlag', 'dir_2_nlag']
 
@@ -182,9 +188,9 @@ def compute_4th_order_cumulant(df_pairs, nlag_dir):
 
     # Compute the fourth-order cumulant: 
     # mu_4 - (E_1 + E_2 + E_3)
-    result['cumulant_4'] = result['E_0'] - (result['E_1'] + result['E_2'] + result['E_3'])
+    result['k_4'] = result['E_0'] - (result['E_1'] + result['E_2'] + result['E_3'])
 
     # Group by dir_0_nlag, dir_1_nlag, and dir_2_nlag columns and average the cumulant
-    final_result = result.groupby(columns)['cumulant_4'].mean().reset_index()
+    final_result = result.groupby(columns)['k_4'].mean().reset_index()
 
     return final_result
