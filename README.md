@@ -9,11 +9,11 @@ Welcome to the **Geostatistical Cumulant Tool** repository! This tool is designe
 - **Parallel and Sequential Execution**: Both the search pairing algorithm and cumulant computation can be executed in parallel or sequentially, providing flexibility based on your computational needs.
 - **Cumulant Maps Visualization**: Visualize third and fourth-order cumulant maps for insightful geostatistical analysis.
 
-## Theory
+# Theory
 
 This section provides an overview of the theoretical concepts underlying the Geostatistical Computation Cumulant Tool, specifically focusing on the Search Pair Algorithm and Cumulant Computation.
 
-# Search Pair Algorithm
+## Search Pair Algorithm
 
 The **Search Pair Algorithm** is designed to identify and pair data points based on spatial relationships. The algorithm allows the user to input the following parameters:
 
@@ -38,7 +38,7 @@ Below is a visual representation of the parameters and their spatial relationshi
 <p align="center"><strong>Figure 1</strong>: Spatial relationships and input parameters used in the Search Pair Algorithm.</p>
 
 
-# Cumulant Computation
+## Cumulant Computation
 
 In this section, we discuss the computation of cumulants for the data. The data is first centered, after which the cumulants are calculated.
 
@@ -69,7 +69,7 @@ $$
 $$
 
 
-## Requirements
+# Requirements
 
 ### Software Installation
 
@@ -86,9 +86,9 @@ In addition to the software requirements, the following Python libraries need to
 pip install pandas numpy cupy numba
 ```
 
-## How to Use
+# How to Use
 
-### Search Pairs
+## Search Pairs
 
 1. **Set Parameters:**
    - Fill in the parameters for the search pair algoritm in the `search_parameters.json` file.
@@ -112,7 +112,7 @@ pip install pandas numpy cupy numba
 7. **Save Output:**
    - The output file will be saved as a JSON file in the `output` folder.
 
-### Compute Cumulants
+## Compute Cumulants
 
 1. **Run the Script:**
    - Navigate to either the `sequential` or `parallel` workflow folder.
@@ -127,7 +127,7 @@ pip install pandas numpy cupy numba
 4. **Save Output:**
    - The output file will be saved as a CSV file in the `output` folder.
 
-### Visualize Cumulant Map
+## Visualize Cumulant Map
 
 1. **Run Visualization Script:**
    - Navigate to the `visualization` folder
