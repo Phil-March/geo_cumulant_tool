@@ -52,13 +52,13 @@ $\kappa(X_1, \dots, X_n) = \sum_{\pi} (|\pi| - 1)! \cdot (-1)^{|\pi|-1} \prod_{B
 
 For the 3rd order cumulant, the centered equation is:
 
-$E[Z(u) \cdot Z(u + h_1) \cdot Z(u + h_2)]$
+$\kappa_3 = E[Z(u) \cdot Z(u + h_1) \cdot Z(u + h_2)]$
 
 ### 4th Order Cumulant
 
 For the 4th order cumulant, the centered equation is:
 
-$E[Z(u) \cdot Z(u + h_1) \cdot Z(u + h_2) \cdot Z(u + h_3)] - E[Z(u), Z(u + h_1)] \cdot E[Z(u + h_2), Z(u + h_3)] - E[Z(u), Z(u + h_2)] \cdot E[Z(u + h_1), Z(u + h_3)] - E[Z(u + h_1), Z(u + h_2)] \cdot E[Z(u), Z(u + h_3)]$
+$k_4 = E[Z(u) \cdot Z(u + h_1) \cdot Z(u + h_2) \cdot Z(u + h_3)] - E[Z(u), Z(u + h_1)] \cdot E[Z(u + h_2), Z(u + h_3)] - E[Z(u), Z(u + h_2)] \cdot E[Z(u + h_1), Z(u + h_3)] - E[Z(u + h_1), Z(u + h_2)] \cdot E[Z(u), Z(u + h_3)]$
 
 
 
