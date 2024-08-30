@@ -46,7 +46,7 @@ Below is a visual representation of the parameters and their spatial relationshi
 
 Before running the Geostatistical Computation Cumulant Tool, ensure that the following software is installed on your system:
 
-1. **Python 3.12.2**: This tool requires Python version 3.12.2 or higher. You can download and install it from the [official Python website](https://www.python.org/downloads/).
+1. **Python 3.12.2**: This tool requires Python version 3.12.2 or higher. You can download and install it from the [Python website](https://www.python.org/downloads/).
 2. **CUDA Toolkit**: For leveraging GPU acceleration (if using parallel execution), ensure that the CUDA Toolkit is installed. You can download it from the [NVIDIA website](https://developer.nvidia.com/cuda-toolkit).
 
 ### Python Libraries
