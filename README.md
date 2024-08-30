@@ -38,7 +38,35 @@ Below is a visual representation of the parameters and their spatial relationshi
 <p align="center"><strong>Figure 1</strong>: Spatial relationships and input parameters used in the Search Pair Algorithm.</p>
 
 
-### Cumulant Computation
+## Cumulant Computation
+
+In this section, we discuss the computation of cumulants for the data. The data is first centered, after which the cumulants are calculated. We utilize the 3rd and 4th order cumulant equations, which are derived as follows:
+
+### General Cumulant Equation
+
+The general formula for computing the cumulantsis given by:
+
+\kappa(X_1, \dots, X_n) = \sum_{\pi} (|\pi| - 1)! \cdot (-1)^{|\pi|-1} \prod_{B \in \pi} \mathbb{E} \left( \prod_{i \in B} X_i \right)
+
+
+### 3rd Order Cumulant
+
+For the 3rd order cumulant, the centered equation is:
+
+\[
+E[Z(u) \cdot Z(u + h_1) \cdot Z(u + h_2)]
+\]
+
+### 4th Order Cumulant
+
+For the 4th order cumulant, the centered equation is:
+
+\[
+E[Z(u) \cdot Z(u + h_1) \cdot Z(u + h_2) \cdot Z(u + h_3)] - E[Z(u), Z(u + h_1)] E[Z(u + h_2), Z(u + h_3)] - E[Z(u), Z(u + h_2)] E[Z(u + h_1), Z(u + h_3)] - E[Z(u + h_1), Z(u + h_2)] E[Z(u), Z(u + h_3)]
+\]
+
+These equations allow for precise computation of the cumulants, aiding in the statistical analysis of the spatial data.
+
 
 ## Requirements
 
