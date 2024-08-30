@@ -60,7 +60,6 @@ For the 4th order cumulant, the centered equation is:
 
 $E[Z(u) \cdot Z(u + h_1) \cdot Z(u + h_2) \cdot Z(u + h_3)] - E[Z(u), Z(u + h_1)] \cdot E[Z(u + h_2), Z(u + h_3)] - E[Z(u), Z(u + h_2)] \cdot E[Z(u + h_1), Z(u + h_3)] - E[Z(u + h_1), Z(u + h_2)] \cdot E[Z(u), Z(u + h_3)]$
 
-These equations allow for precise computation of the cumulants, aiding in the statistical analysis of the spatial data.
 
 
 ## Requirements
