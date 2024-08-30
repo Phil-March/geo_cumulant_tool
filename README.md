@@ -58,7 +58,7 @@ $\kappa_3 = E[Z(u) \cdot Z(u + h_1) \cdot Z(u + h_2)]$
 
 For the 4th order cumulant, the centered equation is:
 
-$kappa_4 = E[Z(u) \cdot Z(u + h_1) \cdot Z(u + h_2) \cdot Z(u + h_3)] - E[Z(u), Z(u + h_1)] \cdot E[Z(u + h_2), Z(u + h_3)] - E[Z(u), Z(u + h_2)] \cdot E[Z(u + h_1), Z(u + h_3)] - E[Z(u + h_1), Z(u + h_2)] \cdot E[Z(u), Z(u + h_3)]$
+$\kappa_4 = E[Z(u) \cdot Z(u + h_1) \cdot Z(u + h_2) \cdot Z(u + h_3)] - E[Z(u), Z(u + h_1)] \cdot E[Z(u + h_2), Z(u + h_3)] - E[Z(u), Z(u + h_2)] \cdot E[Z(u + h_1), Z(u + h_3)] - E[Z(u + h_1), Z(u + h_2)] \cdot E[Z(u), Z(u + h_3)]$
 
 
 
