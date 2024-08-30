@@ -40,7 +40,7 @@ Below is a visual representation of the parameters and their spatial relationshi
 
 ## Cumulant Computation
 
-In this section, we discuss the computation of cumulants for the data. The data is first centered, after which the cumulants are calculated. We utilize the 3rd and 4th order cumulant equations, which are derived as follows:
+In this section, we discuss the computation of cumulants for the data. The data is first centered, after which the cumulants are calculated.
 
 ### General Cumulant Equation
 
@@ -50,18 +50,23 @@ $$
 \kappa(X_1, \dots, X_n) = \sum\limits_{\pi} (|\pi| - 1)! \cdot (-1)^{|\pi|-1} \prod\limits_{B \in \pi} \mathbb{E} \left( \prod\limits_{i \in B} X_i \right)
 $$
 
+The 3rd and 4th order cumulant equations are derived from the general cumulant equation. The general equation provides a framework for calculating cumulants of any order by considering all possible partitions of the set of random variables.
+
 ### 3rd Order Cumulant
 
 The 3rd order cumulant equation for a centered dataset is:
 
-$\kappa_3 = E[Z(u) \cdot Z(u + h_1) \cdot Z(u + h_2)]$
+$$
+\kappa_3 = E[Z(u) \cdot Z(u + h_1) \cdot Z(u + h_2)]
+$$
 
 ### 4th Order Cumulant
 
 The 4th order cumulant equation for a centered dataset is:
 
-$\kappa_4 = E[Z(u) \cdot Z(u + h_1) \cdot Z(u + h_2) \cdot Z(u + h_3)] - E[Z(u), Z(u + h_1)] \cdot E[Z(u + h_2), Z(u + h_3)] - E[Z(u), Z(u + h_2)] \cdot E[Z(u + h_1), Z(u + h_3)] - E[Z(u + h_1), Z(u + h_2)] \cdot E[Z(u), Z(u + h_3)]$
-
+$$
+\kappa_4 = E[Z(u) \cdot Z(u + h_1) \cdot Z(u + h_2) \cdot Z(u + h_3)] - E[Z(u), Z(u + h_1)] \cdot E[Z(u + h_2), Z(u + h_3)] - E[Z(u), Z(u + h_2)] \cdot E[Z(u + h_1), Z(u + h_3)] - E[Z(u + h_1), Z(u + h_2)] \cdot E[Z(u), Z(u + h_3)]
+$$
 
 
 ## Requirements
