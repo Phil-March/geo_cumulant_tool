@@ -44,26 +44,21 @@ In this section, we discuss the computation of cumulants for the data. The data 
 
 ### General Cumulant Equation
 
-The general formula for computing the cumulantsis given by:
+The general formula for computing the cumulants is given by:
 
-\kappa(X_1, \dots, X_n) = \sum_{\pi} (|\pi| - 1)! \cdot (-1)^{|\pi|-1} \prod_{B \in \pi} \mathbb{E} \left( \prod_{i \in B} X_i \right)
-
+$\kappa(X_1, \dots, X_n) = \sum_{\pi} (|\pi| - 1)! \cdot (-1)^{|\pi|-1} \prod_{B \in \pi} \mathbb{E} \left( \prod_{i \in B} X_i \right)$
 
 ### 3rd Order Cumulant
 
 For the 3rd order cumulant, the centered equation is:
 
-\[
-E[Z(u) \cdot Z(u + h_1) \cdot Z(u + h_2)]
-\]
+$E[Z(u) \cdot Z(u + h_1) \cdot Z(u + h_2)]$
 
 ### 4th Order Cumulant
 
 For the 4th order cumulant, the centered equation is:
 
-\[
-E[Z(u) \cdot Z(u + h_1) \cdot Z(u + h_2) \cdot Z(u + h_3)] - E[Z(u), Z(u + h_1)] E[Z(u + h_2), Z(u + h_3)] - E[Z(u), Z(u + h_2)] E[Z(u + h_1), Z(u + h_3)] - E[Z(u + h_1), Z(u + h_2)] E[Z(u), Z(u + h_3)]
-\]
+$E[Z(u) \cdot Z(u + h_1) \cdot Z(u + h_2) \cdot Z(u + h_3)] - E[Z(u), Z(u + h_1)] \cdot E[Z(u + h_2), Z(u + h_3)] - E[Z(u), Z(u + h_2)] \cdot E[Z(u + h_1), Z(u + h_3)] - E[Z(u + h_1), Z(u + h_2)] \cdot E[Z(u), Z(u + h_3)]$
 
 These equations allow for precise computation of the cumulants, aiding in the statistical analysis of the spatial data.
 
