@@ -17,15 +17,15 @@ This section provides an overview of the theoretical concepts underlying the Geo
 
 The **Search Pair Algorithm** is designed to identify and pair data points based on spatial relationships. The algorithm allows the user to input the following parameters:
 
-- **Number of Lags (`nlag`)**
-- **Lag Distance (`lag`)**
-- **Lag Tolerance (`lag_tol`)**
-- **Azimuth (`azm`)**
-- **Azimuth Tolerance (`azm_tol`)**
-- **Bandwidth Horizontal (`bandwh`)**
-- **Dip (`dip`)**
-- **Dip Tolerance (`dip_tol`)**
-- **Bandwidth Vertical (`bandwv`)**
+- **Number of Lags**
+- **Lag Distance**
+- **Lag Tolerance**
+- **Azimuth**
+- **Azimuth Tolerance**
+- **Bandwidth Horizontal**
+- **Dip**
+- **Dip Tolerance**
+- **Bandwidth Vertical**
 
 These parameters enable the precise control of the spatial relationships in the analysis.
 
@@ -35,7 +35,7 @@ Below is a visual representation of the parameters and their spatial relationshi
   <img src="https://github.com/user-attachments/assets/a09ae3d3-e393-48a8-8c77-e0ec4ca5d4c3" alt="Search Pair Algorithm Parameters">
 </p>
 
-**Figure 1**: Spatial relationships and input parameters used in the Search Pair Algorithm.
+<p align="center"><strong>Figure 1</strong>: Spatial relationships and input parameters used in the Search Pair Algorithm.</p>
 
 
 
