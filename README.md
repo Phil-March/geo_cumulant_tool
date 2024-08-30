@@ -46,7 +46,9 @@ In this section, we discuss the computation of cumulants for the data. The data 
 
 The general formula for computing the cumulants is given by:
 
-$\kappa(X_1, \dots, X_n) = \sum_{\pi} (|\pi| - 1)! \cdot (-1)^{|\pi|-1} \prod\limits_{B \in \pi} \mathbb{E} \left( \prod_{i \in B} X_i \right)$
+$$
+\kappa(X_1, \dots, X_n) = \sum\limits_{\pi} (|\pi| - 1)! \cdot (-1)^{|\pi|-1} \prod\limits_{B \in \pi} \mathbb{E} \left( \prod\limits_{i \in B} X_i \right)
+$$
 
 ### 3rd Order Cumulant
 
