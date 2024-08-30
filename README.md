@@ -50,7 +50,7 @@ $$
 \kappa(X_1, \dots, X_n) = \sum\limits_{\pi} (|\pi| - 1)! \cdot (-1)^{|\pi|-1} \prod\limits_{B \in \pi} \mathbb{E} \left( \prod\limits_{i \in B} X_i \right)
 $$
 
-The 3rd and 4th order cumulant equations are derived from the general cumulant equation. The general equation provides a framework for calculating cumulants of any order by considering all possible partitions of the set of random variables.
+The 3rd and 4th order cumulant equations are derived from the general cumulant equation.
 
 ### 3rd Order Cumulant
 
