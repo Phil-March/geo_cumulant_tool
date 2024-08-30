@@ -38,12 +38,6 @@ Below is a visual representation of the parameters and their spatial relationshi
 <p align="center"><strong>Figure 1</strong>: Spatial relationships and input parameters used in the Search Pair Algorithm.</p>
 
 
-
-
-#### Key Aspects of the Search Pair Algorithm:
-
-- **Efficiency**: The algorithm is optimized for both sequential and parallel execution, making it capable of handling large
-
 ### Cumulant Computation
 
 ## Requirements
