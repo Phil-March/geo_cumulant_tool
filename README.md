@@ -15,9 +15,29 @@ This section provides an overview of the theoretical concepts underlying the Geo
 
 ### Search Pair Algorithm
 
-The **Search Pair Algorithm** is designed to identify and pair data points based on spatial relationships.
+The **Search Pair Algorithm** is designed to identify and pair data points based on spatial relationships. The algorithm allows the user to input the following parameters:
 
-![image](https://github.com/user-attachments/assets/15b4b746-3902-49f5-9853-1bbb89987b79)
+- **Number of Lags (`nlag`)**
+- **Lag Distance (`lag`)**
+- **Lag Tolerance (`lag_tol`)**
+- **Azimuth (`azm`)**
+- **Azimuth Tolerance (`azm_tol`)**
+- **Bandwidth Horizontal (`bandwh`)**
+- **Dip (`dip`)**
+- **Dip Tolerance (`dip_tol`)**
+- **Bandwidth Vertical (`bandwv`)**
+
+These parameters enable the precise control of the spatial relationships in the analysis.
+
+Below is a visual representation of the parameters and their spatial relationships:
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/a09ae3d3-e393-48a8-8c77-e0ec4ca5d4c3" alt="Search Pair Algorithm Parameters">
+</p>
+
+**Figure 1**: Spatial relationships and input parameters used in the Search Pair Algorithm.
+
+
 
 
 #### Key Aspects of the Search Pair Algorithm:
