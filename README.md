@@ -15,7 +15,10 @@ This section provides an overview of the theoretical concepts underlying the Geo
 
 ### Search Pair Algorithm
 
-The **Search Pair Algorithm** is a critical component of the tool, designed to efficiently identify and pair data points based on spatial relationships. In geostatistical analysis, the accurate pairing of data points is essential for the computation of cumulants, as it directly affects the statistical properties of the resulting models.
+The **Search Pair Algorithm** is designed to identify and pair data points based on spatial relationships.
+
+![image](https://github.com/user-attachments/assets/15b4b746-3902-49f5-9853-1bbb89987b79)
+
 
 #### Key Aspects of the Search Pair Algorithm:
 
