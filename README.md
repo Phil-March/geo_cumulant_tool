@@ -38,11 +38,11 @@ Below is a visual representation of the parameters and their spatial relationshi
 <p align="center"><strong>Figure 1</strong>: Spatial relationships and input parameters used in the Search Pair Algorithm.</p>
 
 
-## Cumulant Computation
+### Cumulant Computation
 
 In this section, we discuss the computation of cumulants for the data. The data is first centered, after which the cumulants are calculated.
 
-### General Cumulant Equation
+# General Cumulant Equation
 
 The general formula for computing the cumulants is given by:
 
@@ -52,7 +52,7 @@ $$
 
 The 3rd and 4th order cumulant equations are derived from the general cumulant equation.
 
-### 3rd Order Cumulant
+# 3rd Order Cumulant
 
 The 3rd order cumulant equation for a centered dataset is:
 
@@ -60,7 +60,7 @@ $$
 \kappa_3 = E[Z(u) \cdot Z(u + h_1) \cdot Z(u + h_2)]
 $$
 
-### 4th Order Cumulant
+# 4th Order Cumulant
 
 The 4th order cumulant equation for a centered dataset is:
 
@@ -84,3 +84,57 @@ In addition to the software requirements, the following Python libraries need to
 
 ```bash
 pip install pandas numpy cupy numba
+```
+
+## How to Use
+
+### Search Pairs
+
+1. **Set Parameters:**
+   - Fill in the parameters for the search pair algoritm in the `search_parameters.json` file.
+     
+2. **Prepare Data:**
+   - Upload the CSV data file into the `input` folder. The file should follow the format: `X`, `Y`, `Z`, `GRADE` columns.
+
+3. **Run the Script:**
+   - Navigate to either the `sequential` or `parallel` workflow folder.
+   - Execute the `...run.py` file using Python.
+
+4. **Compute Pairs:**
+   - When prompted, select the option to compute pairs.
+
+5. **Choose Directions:**
+   - When prompted, choose the number of directions to be used (either 2 or 3).
+
+6. **Select Data File:**
+   - When prompted, select the data file you wish to use.
+
+7. **Save Output:**
+   - The output file will be saved as a JSON file in the `output` folder.
+
+### Compute Cumulants
+
+1. **Run the Script:**
+   - Navigate to either the `sequential` or `parallel` workflow folder.
+   - Execute the `...run.py` file using Python.
+
+2. **Select Input Data:**
+   - When prompted, select the original input data file.
+
+3. **Select Pairs File:**
+   - When prompted, select the associated generated pairs file.
+
+4. **Save Output:**
+   - The output file will be saved as a CSV file in the `output` folder.
+
+### Visualize Cumulant Map
+
+1. **Run Visualization Script:**
+   - Navigate to the `visualization` folder
+   - Execute the `cumulant_map_vis.py` file.
+
+2. **Access Visualization:**
+   - Follow the displayed HTTPS link or copy and paste it into a web browser.
+
+3. **Select File:**
+   - Choose the file you want to visualize in the web app.
