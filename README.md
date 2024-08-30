@@ -1,6 +1,6 @@
 # Geostatistical Cumulant Tool
 
-Welcome to the **Geostatistical Cumulant Tool** repository! This tool is designed to compute third and fourth-order cumulants, enabling advanced geostatistical analysis in 2 and 3 directions. The tool includes a search pairing algorithm for cumulant computation and provides visualization for third and fourth-order cumulant maps.
+Welcome to the **Geostatistical Cumulant Tool** repository! This tool is designed to compute third and fourth-order cumulants, enabling geospacial analysis in 2 and 3 directions. The tool includes a search pairing algorithm for cumulant computation and provides visualization for third and fourth-order cumulant maps.
 
 ## Features
 - **Pairing Algorithm**: Efficient search pairing algorithm for accurate cumulant computation.
