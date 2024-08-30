@@ -52,7 +52,7 @@ $$
 
 The 3rd and 4th order cumulant equations are derived from the general cumulant equation.
 
-# 3rd Order Cumulant
+** 3rd Order Cumulant **
 
 The 3rd order cumulant equation for a centered dataset is:
 
@@ -60,7 +60,7 @@ $$
 \kappa_3 = E[Z(u) \cdot Z(u + h_1) \cdot Z(u + h_2)]
 $$
 
-# 4th Order Cumulant
+** 4th Order Cumulant **
 
 The 4th order cumulant equation for a centered dataset is:
 
