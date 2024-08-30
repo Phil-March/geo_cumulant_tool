@@ -42,7 +42,7 @@ Below is a visual representation of the parameters and their spatial relationshi
 
 In this section, we discuss the computation of cumulants for the data. The data is first centered, after which the cumulants are calculated.
 
-## General Cumulant Equation
+### General Cumulant Equation
 
 The general formula for computing the cumulants is given by:
 
@@ -52,7 +52,7 @@ $$
 
 The 3rd and 4th order cumulant equations are derived from the general cumulant equation.
 
-## 3rd Order Cumulant
+### 3rd Order Cumulant
 
 The 3rd order cumulant equation for a centered dataset is:
 
@@ -60,7 +60,7 @@ $$
 \kappa_3 = E[Z(u) \cdot Z(u + h_1) \cdot Z(u + h_2)]
 $$
 
-## 4th Order Cumulant
+### 4th Order Cumulant
 
 The 4th order cumulant equation for a centered dataset is:
 
