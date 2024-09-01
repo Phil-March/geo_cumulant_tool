@@ -122,7 +122,7 @@ def compute_4th_order_cumulant(df_pairs):
     cumulative_result = pd.DataFrame()
 
     # Split the generated DataFrame into chunks to reduce memory usage
-    chunks = np.array_split(df_generated, 10000)  # Adjust the number of chunks as needed
+    chunks = np.array_split(df_generated, 1000)  # Adjust the number of chunks as needed
 
     for chunk in chunks:
         # Merge for direction 0
