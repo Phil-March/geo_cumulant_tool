@@ -115,9 +115,9 @@ def compute_4th_order_cumulant(df_pairs):
     n_values = cp.array(df_pairs['n'].values)
     
     # Determine the maximum values of n for each dim_id
-    max_n_dim_0 = cp.max(n_values[dim_id == 0])
-    max_n_dim_1 = cp.max(n_values[dim_id == 1])
-    max_n_dim_2 = cp.max(n_values[dim_id == 2])
+    max_n_dim_0 = int(cp.max(n_values[dim_id == 0]))  # Convert to Python int
+    max_n_dim_1 = int(cp.max(n_values[dim_id == 1]))  # Convert to Python int
+    max_n_dim_2 = int(cp.max(n_values[dim_id == 2]))  # Convert to Python int
     
     # Generate all combinations of values for each column
     combinations = list(itertools.product(range(1, max_n_dim_0 + 1), range(1, max_n_dim_1 + 1), range(1, max_n_dim_2 + 1)))
