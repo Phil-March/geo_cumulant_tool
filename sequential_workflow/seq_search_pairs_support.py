@@ -41,7 +41,7 @@ def seq_calculate_dip_3d(x1, y1, z1, x2, y2, z2):
 
     return dip
 
-def distance_along_horizontal_bandwidth(x1, y1, z1, x2, y2, z2, azimuth, dip):
+def seq_distance_along_horizontal_bandwidth(x1, y1, z1, x2, y2, z2, azimuth, dip):
     """
     Calculate the horizontal distance perpendicular to the plane defined by azimuth and dip 
     from the initial point (x1, y1, z1) to the point (x2, y2, z2).
@@ -70,7 +70,7 @@ def distance_along_horizontal_bandwidth(x1, y1, z1, x2, y2, z2, azimuth, dip):
     return horizontal_distance
 
 
-def distance_along_vertical_bandwidth(x1, y1, z1, x2, y2, z2, azimuth, dip):
+def seq_distance_along_vertical_bandwidth(x1, y1, z1, x2, y2, z2, azimuth, dip):
     """
     Calculate the vertical distance perpendicular to the plane defined by azimuth and dip 
     from the initial point (x1, y1, z1) to the point (x2, y2, z2).

@@ -2,8 +2,8 @@
 from seq_search_pairs_support import (
     seq_calculate_azimuth_3d,
     seq_calculate_dip_3d,
-    distance_along_horizontal_bandwidth,
-    distance_along_vertical_bandwidth,
+    seq_distance_along_horizontal_bandwidth,
+    seq_distance_along_vertical_bandwidth,
     seq_point_distance_to_shifted_plane
 )
 
@@ -41,13 +41,13 @@ def seq_search_pairs_gen(data_vector, dim, nlag, lag, lag_tol, azm, azm_tol, ban
                         continue
                     
                     #Access the horizontal bandwidth boundaries
-                    distance_banwh = distance_along_horizontal_bandwidth(p[1], p[2], p[3], potential_pair[1], potential_pair[2], potential_pair[3], azm[dim_id], dip[dim_id])
+                    distance_banwh = seq_distance_along_horizontal_bandwidth(p[1], p[2], p[3], potential_pair[1], potential_pair[2], potential_pair[3], azm[dim_id], dip[dim_id])
                     if  abs(distance_banwh) > bandwh[dim_id]:
                         #print("Horizontal past angle")
                         continue
                     
                     #Access the vertical bandwidth boundaries
-                    distance_banwv = distance_along_vertical_bandwidth(p[1], p[2], p[3], potential_pair[1], potential_pair[2], potential_pair[3], azm[dim_id], dip[dim_id])
+                    distance_banwv = seq_distance_along_vertical_bandwidth(p[1], p[2], p[3], potential_pair[1], potential_pair[2], potential_pair[3], azm[dim_id], dip[dim_id])
                     if abs(distance_banwv) > bandwv[dim_id]:
                         #print("Vertical past angle")
                         continue
