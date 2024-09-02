@@ -2,7 +2,7 @@ import os
 import json
 import pandas as pd
 
-def list_output_files():
+def list_output_files(file_type):
     parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
     output_folder = os.path.join(parent_dir, 'output')
     
@@ -10,7 +10,14 @@ def list_output_files():
         print("Output folder does not exist.")
         return []
     
-    files = os.listdir(output_folder)
+    # Filter files based on file type
+    if file_type == 'json':
+        files = [f for f in os.listdir(output_folder) if f.endswith('.json')]
+    elif file_type == 'csv':
+        files = [f for f in os.listdir(output_folder) if f.endswith('.csv')]
+    else:
+        files = []
+    
     return files, output_folder
 
 def display_files(files):
@@ -63,9 +70,15 @@ def main():
             print("Exiting the program.")
             break
         
-        files, output_folder = list_output_files()
+        file_type = 'json' if choice == '1' else 'csv' if choice == '2' else None
+        if not file_type:
+            print("Invalid choice. Please choose 1 for pairs, 2 for cumulants, or 3 to exit.")
+            continue
+        
+        files, output_folder = list_output_files(file_type)
         
         if not files:
+            print(f"No {file_type.upper()} files found in the output folder.")
             continue
         
         display_files(files)
@@ -82,7 +95,7 @@ def main():
             if compliance_percentage == 100:
                 print("The JSON files are fully compliant (100% match).")
             else:
-                print("The JSON files are not fully compliant.")
+                print("The JSON files are not fully compliant.") 
         elif choice == '2':
             compliance_percentage = compare_csv_files(file1_path, file2_path)
             print(f"Compliance percentage: {compliance_percentage:.2f}%")
@@ -90,8 +103,6 @@ def main():
                 print("The CSV files are fully compliant (100% match).")
             else:
                 print("The CSV files are not fully compliant.")
-        else:
-            print("Invalid choice. Please choose 1 for pairs, 2 for cumulants, or 3 to exit.")
 
 if __name__ == "__main__":
     main()

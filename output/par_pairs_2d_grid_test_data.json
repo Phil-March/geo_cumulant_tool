@@ -2,6 +2,12 @@
     {
         "point_id":1,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":2
+    },
+    {
+        "point_id":1,
+        "dim_id":0,
         "n":2,
         "paired_point_id":3
     },
@@ -116,6 +122,12 @@
     {
         "point_id":2,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":3
+    },
+    {
+        "point_id":2,
+        "dim_id":0,
         "n":2,
         "paired_point_id":4
     },
@@ -224,6 +236,12 @@
     {
         "point_id":3,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":4
+    },
+    {
+        "point_id":3,
+        "dim_id":0,
         "n":2,
         "paired_point_id":5
     },
@@ -326,6 +344,12 @@
     {
         "point_id":4,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":5
+    },
+    {
+        "point_id":4,
+        "dim_id":0,
         "n":2,
         "paired_point_id":6
     },
@@ -422,6 +446,12 @@
     {
         "point_id":5,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":6
+    },
+    {
+        "point_id":5,
+        "dim_id":0,
         "n":2,
         "paired_point_id":7
     },
@@ -512,6 +542,12 @@
     {
         "point_id":6,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":7
+    },
+    {
+        "point_id":6,
+        "dim_id":0,
         "n":2,
         "paired_point_id":8
     },
@@ -596,6 +632,12 @@
     {
         "point_id":7,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":8
+    },
+    {
+        "point_id":7,
+        "dim_id":0,
         "n":2,
         "paired_point_id":9
     },
@@ -674,6 +716,12 @@
     {
         "point_id":8,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":9
+    },
+    {
+        "point_id":8,
+        "dim_id":0,
         "n":2,
         "paired_point_id":10
     },
@@ -746,6 +794,12 @@
     {
         "point_id":9,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":10
+    },
+    {
+        "point_id":9,
+        "dim_id":0,
         "n":2,
         "paired_point_id":11
     },
@@ -808,6 +862,12 @@
         "dim_id":1,
         "n":10,
         "paired_point_id":119
+    },
+    {
+        "point_id":10,
+        "dim_id":0,
+        "n":1,
+        "paired_point_id":11
     },
     {
         "point_id":10,
@@ -928,6 +988,12 @@
         "dim_id":1,
         "n":10,
         "paired_point_id":121
+    },
+    {
+        "point_id":12,
+        "dim_id":0,
+        "n":1,
+        "paired_point_id":13
     },
     {
         "point_id":12,
@@ -1040,6 +1106,12 @@
     {
         "point_id":13,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":14
+    },
+    {
+        "point_id":13,
+        "dim_id":0,
         "n":2,
         "paired_point_id":15
     },
@@ -1142,6 +1214,12 @@
     {
         "point_id":14,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":15
+    },
+    {
+        "point_id":14,
+        "dim_id":0,
         "n":2,
         "paired_point_id":16
     },
@@ -1238,6 +1316,12 @@
     {
         "point_id":15,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":16
+    },
+    {
+        "point_id":15,
+        "dim_id":0,
         "n":2,
         "paired_point_id":17
     },
@@ -1328,6 +1412,12 @@
     {
         "point_id":16,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":17
+    },
+    {
+        "point_id":16,
+        "dim_id":0,
         "n":2,
         "paired_point_id":18
     },
@@ -1412,6 +1502,12 @@
     {
         "point_id":17,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":18
+    },
+    {
+        "point_id":17,
+        "dim_id":0,
         "n":2,
         "paired_point_id":19
     },
@@ -1490,6 +1586,12 @@
     {
         "point_id":18,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":19
+    },
+    {
+        "point_id":18,
+        "dim_id":0,
         "n":2,
         "paired_point_id":20
     },
@@ -1562,6 +1664,12 @@
     {
         "point_id":19,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":20
+    },
+    {
+        "point_id":19,
+        "dim_id":0,
         "n":2,
         "paired_point_id":21
     },
@@ -1628,6 +1736,12 @@
     {
         "point_id":20,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":21
+    },
+    {
+        "point_id":20,
+        "dim_id":0,
         "n":2,
         "paired_point_id":22
     },
@@ -1684,6 +1798,12 @@
         "dim_id":1,
         "n":9,
         "paired_point_id":119
+    },
+    {
+        "point_id":21,
+        "dim_id":0,
+        "n":1,
+        "paired_point_id":22
     },
     {
         "point_id":21,
@@ -1792,6 +1912,12 @@
         "dim_id":1,
         "n":9,
         "paired_point_id":121
+    },
+    {
+        "point_id":23,
+        "dim_id":0,
+        "n":1,
+        "paired_point_id":24
     },
     {
         "point_id":23,
@@ -1898,6 +2024,12 @@
     {
         "point_id":24,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":25
+    },
+    {
+        "point_id":24,
+        "dim_id":0,
         "n":2,
         "paired_point_id":26
     },
@@ -1994,6 +2126,12 @@
     {
         "point_id":25,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":26
+    },
+    {
+        "point_id":25,
+        "dim_id":0,
         "n":2,
         "paired_point_id":27
     },
@@ -2084,6 +2222,12 @@
     {
         "point_id":26,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":27
+    },
+    {
+        "point_id":26,
+        "dim_id":0,
         "n":2,
         "paired_point_id":28
     },
@@ -2168,6 +2312,12 @@
     {
         "point_id":27,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":28
+    },
+    {
+        "point_id":27,
+        "dim_id":0,
         "n":2,
         "paired_point_id":29
     },
@@ -2246,6 +2396,12 @@
     {
         "point_id":28,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":29
+    },
+    {
+        "point_id":28,
+        "dim_id":0,
         "n":2,
         "paired_point_id":30
     },
@@ -2318,6 +2474,12 @@
     {
         "point_id":29,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":30
+    },
+    {
+        "point_id":29,
+        "dim_id":0,
         "n":2,
         "paired_point_id":31
     },
@@ -2384,6 +2546,12 @@
     {
         "point_id":30,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":31
+    },
+    {
+        "point_id":30,
+        "dim_id":0,
         "n":2,
         "paired_point_id":32
     },
@@ -2444,6 +2612,12 @@
     {
         "point_id":31,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":32
+    },
+    {
+        "point_id":31,
+        "dim_id":0,
         "n":2,
         "paired_point_id":33
     },
@@ -2494,6 +2668,12 @@
         "dim_id":1,
         "n":8,
         "paired_point_id":119
+    },
+    {
+        "point_id":32,
+        "dim_id":0,
+        "n":1,
+        "paired_point_id":33
     },
     {
         "point_id":32,
@@ -2590,6 +2770,12 @@
         "dim_id":1,
         "n":8,
         "paired_point_id":121
+    },
+    {
+        "point_id":34,
+        "dim_id":0,
+        "n":1,
+        "paired_point_id":35
     },
     {
         "point_id":34,
@@ -2690,6 +2876,12 @@
     {
         "point_id":35,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":36
+    },
+    {
+        "point_id":35,
+        "dim_id":0,
         "n":2,
         "paired_point_id":37
     },
@@ -2780,6 +2972,12 @@
     {
         "point_id":36,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":37
+    },
+    {
+        "point_id":36,
+        "dim_id":0,
         "n":2,
         "paired_point_id":38
     },
@@ -2864,6 +3062,12 @@
     {
         "point_id":37,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":38
+    },
+    {
+        "point_id":37,
+        "dim_id":0,
         "n":2,
         "paired_point_id":39
     },
@@ -2942,6 +3146,12 @@
     {
         "point_id":38,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":39
+    },
+    {
+        "point_id":38,
+        "dim_id":0,
         "n":2,
         "paired_point_id":40
     },
@@ -3014,6 +3224,12 @@
     {
         "point_id":39,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":40
+    },
+    {
+        "point_id":39,
+        "dim_id":0,
         "n":2,
         "paired_point_id":41
     },
@@ -3080,6 +3296,12 @@
     {
         "point_id":40,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":41
+    },
+    {
+        "point_id":40,
+        "dim_id":0,
         "n":2,
         "paired_point_id":42
     },
@@ -3140,6 +3362,12 @@
     {
         "point_id":41,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":42
+    },
+    {
+        "point_id":41,
+        "dim_id":0,
         "n":2,
         "paired_point_id":43
     },
@@ -3194,6 +3422,12 @@
     {
         "point_id":42,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":43
+    },
+    {
+        "point_id":42,
+        "dim_id":0,
         "n":2,
         "paired_point_id":44
     },
@@ -3238,6 +3472,12 @@
         "dim_id":1,
         "n":7,
         "paired_point_id":119
+    },
+    {
+        "point_id":43,
+        "dim_id":0,
+        "n":1,
+        "paired_point_id":44
     },
     {
         "point_id":43,
@@ -3322,6 +3562,12 @@
         "dim_id":1,
         "n":7,
         "paired_point_id":121
+    },
+    {
+        "point_id":45,
+        "dim_id":0,
+        "n":1,
+        "paired_point_id":46
     },
     {
         "point_id":45,
@@ -3416,6 +3662,12 @@
     {
         "point_id":46,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":47
+    },
+    {
+        "point_id":46,
+        "dim_id":0,
         "n":2,
         "paired_point_id":48
     },
@@ -3500,6 +3752,12 @@
     {
         "point_id":47,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":48
+    },
+    {
+        "point_id":47,
+        "dim_id":0,
         "n":2,
         "paired_point_id":49
     },
@@ -3578,6 +3836,12 @@
     {
         "point_id":48,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":49
+    },
+    {
+        "point_id":48,
+        "dim_id":0,
         "n":2,
         "paired_point_id":50
     },
@@ -3650,6 +3914,12 @@
     {
         "point_id":49,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":50
+    },
+    {
+        "point_id":49,
+        "dim_id":0,
         "n":2,
         "paired_point_id":51
     },
@@ -3716,6 +3986,12 @@
     {
         "point_id":50,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":51
+    },
+    {
+        "point_id":50,
+        "dim_id":0,
         "n":2,
         "paired_point_id":52
     },
@@ -3776,6 +4052,12 @@
     {
         "point_id":51,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":52
+    },
+    {
+        "point_id":51,
+        "dim_id":0,
         "n":2,
         "paired_point_id":53
     },
@@ -3830,6 +4112,12 @@
     {
         "point_id":52,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":53
+    },
+    {
+        "point_id":52,
+        "dim_id":0,
         "n":2,
         "paired_point_id":54
     },
@@ -3878,6 +4166,12 @@
     {
         "point_id":53,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":54
+    },
+    {
+        "point_id":53,
+        "dim_id":0,
         "n":2,
         "paired_point_id":55
     },
@@ -3916,6 +4210,12 @@
         "dim_id":1,
         "n":6,
         "paired_point_id":119
+    },
+    {
+        "point_id":54,
+        "dim_id":0,
+        "n":1,
+        "paired_point_id":55
     },
     {
         "point_id":54,
@@ -3988,6 +4288,12 @@
         "dim_id":1,
         "n":6,
         "paired_point_id":121
+    },
+    {
+        "point_id":56,
+        "dim_id":0,
+        "n":1,
+        "paired_point_id":57
     },
     {
         "point_id":56,
@@ -4076,6 +4382,12 @@
     {
         "point_id":57,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":58
+    },
+    {
+        "point_id":57,
+        "dim_id":0,
         "n":2,
         "paired_point_id":59
     },
@@ -4154,6 +4466,12 @@
     {
         "point_id":58,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":59
+    },
+    {
+        "point_id":58,
+        "dim_id":0,
         "n":2,
         "paired_point_id":60
     },
@@ -4226,6 +4544,12 @@
     {
         "point_id":59,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":60
+    },
+    {
+        "point_id":59,
+        "dim_id":0,
         "n":2,
         "paired_point_id":61
     },
@@ -4292,6 +4616,12 @@
     {
         "point_id":60,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":61
+    },
+    {
+        "point_id":60,
+        "dim_id":0,
         "n":2,
         "paired_point_id":62
     },
@@ -4352,6 +4682,12 @@
     {
         "point_id":61,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":62
+    },
+    {
+        "point_id":61,
+        "dim_id":0,
         "n":2,
         "paired_point_id":63
     },
@@ -4406,6 +4742,12 @@
     {
         "point_id":62,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":63
+    },
+    {
+        "point_id":62,
+        "dim_id":0,
         "n":2,
         "paired_point_id":64
     },
@@ -4454,6 +4796,12 @@
     {
         "point_id":63,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":64
+    },
+    {
+        "point_id":63,
+        "dim_id":0,
         "n":2,
         "paired_point_id":65
     },
@@ -4496,6 +4844,12 @@
     {
         "point_id":64,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":65
+    },
+    {
+        "point_id":64,
+        "dim_id":0,
         "n":2,
         "paired_point_id":66
     },
@@ -4528,6 +4882,12 @@
         "dim_id":1,
         "n":5,
         "paired_point_id":119
+    },
+    {
+        "point_id":65,
+        "dim_id":0,
+        "n":1,
+        "paired_point_id":66
     },
     {
         "point_id":65,
@@ -4588,6 +4948,12 @@
         "dim_id":1,
         "n":5,
         "paired_point_id":121
+    },
+    {
+        "point_id":67,
+        "dim_id":0,
+        "n":1,
+        "paired_point_id":68
     },
     {
         "point_id":67,
@@ -4670,6 +5036,12 @@
     {
         "point_id":68,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":69
+    },
+    {
+        "point_id":68,
+        "dim_id":0,
         "n":2,
         "paired_point_id":70
     },
@@ -4742,6 +5114,12 @@
     {
         "point_id":69,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":70
+    },
+    {
+        "point_id":69,
+        "dim_id":0,
         "n":2,
         "paired_point_id":71
     },
@@ -4808,6 +5186,12 @@
     {
         "point_id":70,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":71
+    },
+    {
+        "point_id":70,
+        "dim_id":0,
         "n":2,
         "paired_point_id":72
     },
@@ -4868,6 +5252,12 @@
     {
         "point_id":71,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":72
+    },
+    {
+        "point_id":71,
+        "dim_id":0,
         "n":2,
         "paired_point_id":73
     },
@@ -4922,6 +5312,12 @@
     {
         "point_id":72,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":73
+    },
+    {
+        "point_id":72,
+        "dim_id":0,
         "n":2,
         "paired_point_id":74
     },
@@ -4970,6 +5366,12 @@
     {
         "point_id":73,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":74
+    },
+    {
+        "point_id":73,
+        "dim_id":0,
         "n":2,
         "paired_point_id":75
     },
@@ -5012,6 +5414,12 @@
     {
         "point_id":74,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":75
+    },
+    {
+        "point_id":74,
+        "dim_id":0,
         "n":2,
         "paired_point_id":76
     },
@@ -5048,6 +5456,12 @@
     {
         "point_id":75,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":76
+    },
+    {
+        "point_id":75,
+        "dim_id":0,
         "n":2,
         "paired_point_id":77
     },
@@ -5074,6 +5488,12 @@
         "dim_id":1,
         "n":4,
         "paired_point_id":119
+    },
+    {
+        "point_id":76,
+        "dim_id":0,
+        "n":1,
+        "paired_point_id":77
     },
     {
         "point_id":76,
@@ -5122,6 +5542,12 @@
         "dim_id":1,
         "n":4,
         "paired_point_id":121
+    },
+    {
+        "point_id":78,
+        "dim_id":0,
+        "n":1,
+        "paired_point_id":79
     },
     {
         "point_id":78,
@@ -5198,6 +5624,12 @@
     {
         "point_id":79,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":80
+    },
+    {
+        "point_id":79,
+        "dim_id":0,
         "n":2,
         "paired_point_id":81
     },
@@ -5264,6 +5696,12 @@
     {
         "point_id":80,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":81
+    },
+    {
+        "point_id":80,
+        "dim_id":0,
         "n":2,
         "paired_point_id":82
     },
@@ -5324,6 +5762,12 @@
     {
         "point_id":81,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":82
+    },
+    {
+        "point_id":81,
+        "dim_id":0,
         "n":2,
         "paired_point_id":83
     },
@@ -5378,6 +5822,12 @@
     {
         "point_id":82,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":83
+    },
+    {
+        "point_id":82,
+        "dim_id":0,
         "n":2,
         "paired_point_id":84
     },
@@ -5426,6 +5876,12 @@
     {
         "point_id":83,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":84
+    },
+    {
+        "point_id":83,
+        "dim_id":0,
         "n":2,
         "paired_point_id":85
     },
@@ -5468,6 +5924,12 @@
     {
         "point_id":84,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":85
+    },
+    {
+        "point_id":84,
+        "dim_id":0,
         "n":2,
         "paired_point_id":86
     },
@@ -5504,6 +5966,12 @@
     {
         "point_id":85,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":86
+    },
+    {
+        "point_id":85,
+        "dim_id":0,
         "n":2,
         "paired_point_id":87
     },
@@ -5534,6 +6002,12 @@
     {
         "point_id":86,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":87
+    },
+    {
+        "point_id":86,
+        "dim_id":0,
         "n":2,
         "paired_point_id":88
     },
@@ -5554,6 +6028,12 @@
         "dim_id":1,
         "n":3,
         "paired_point_id":119
+    },
+    {
+        "point_id":87,
+        "dim_id":0,
+        "n":1,
+        "paired_point_id":88
     },
     {
         "point_id":87,
@@ -5590,6 +6070,12 @@
         "dim_id":1,
         "n":3,
         "paired_point_id":121
+    },
+    {
+        "point_id":89,
+        "dim_id":0,
+        "n":1,
+        "paired_point_id":90
     },
     {
         "point_id":89,
@@ -5660,6 +6146,12 @@
     {
         "point_id":90,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":91
+    },
+    {
+        "point_id":90,
+        "dim_id":0,
         "n":2,
         "paired_point_id":92
     },
@@ -5720,6 +6212,12 @@
     {
         "point_id":91,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":92
+    },
+    {
+        "point_id":91,
+        "dim_id":0,
         "n":2,
         "paired_point_id":93
     },
@@ -5774,6 +6272,12 @@
     {
         "point_id":92,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":93
+    },
+    {
+        "point_id":92,
+        "dim_id":0,
         "n":2,
         "paired_point_id":94
     },
@@ -5822,6 +6326,12 @@
     {
         "point_id":93,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":94
+    },
+    {
+        "point_id":93,
+        "dim_id":0,
         "n":2,
         "paired_point_id":95
     },
@@ -5864,6 +6374,12 @@
     {
         "point_id":94,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":95
+    },
+    {
+        "point_id":94,
+        "dim_id":0,
         "n":2,
         "paired_point_id":96
     },
@@ -5900,6 +6416,12 @@
     {
         "point_id":95,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":96
+    },
+    {
+        "point_id":95,
+        "dim_id":0,
         "n":2,
         "paired_point_id":97
     },
@@ -5930,6 +6452,12 @@
     {
         "point_id":96,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":97
+    },
+    {
+        "point_id":96,
+        "dim_id":0,
         "n":2,
         "paired_point_id":98
     },
@@ -5954,6 +6482,12 @@
     {
         "point_id":97,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":98
+    },
+    {
+        "point_id":97,
+        "dim_id":0,
         "n":2,
         "paired_point_id":99
     },
@@ -5968,6 +6502,12 @@
         "dim_id":1,
         "n":2,
         "paired_point_id":119
+    },
+    {
+        "point_id":98,
+        "dim_id":0,
+        "n":1,
+        "paired_point_id":99
     },
     {
         "point_id":98,
@@ -5992,6 +6532,12 @@
         "dim_id":1,
         "n":2,
         "paired_point_id":121
+    },
+    {
+        "point_id":100,
+        "dim_id":0,
+        "n":1,
+        "paired_point_id":101
     },
     {
         "point_id":100,
@@ -6056,6 +6602,12 @@
     {
         "point_id":101,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":102
+    },
+    {
+        "point_id":101,
+        "dim_id":0,
         "n":2,
         "paired_point_id":103
     },
@@ -6110,6 +6662,12 @@
     {
         "point_id":102,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":103
+    },
+    {
+        "point_id":102,
+        "dim_id":0,
         "n":2,
         "paired_point_id":104
     },
@@ -6158,6 +6716,12 @@
     {
         "point_id":103,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":104
+    },
+    {
+        "point_id":103,
+        "dim_id":0,
         "n":2,
         "paired_point_id":105
     },
@@ -6200,6 +6764,12 @@
     {
         "point_id":104,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":105
+    },
+    {
+        "point_id":104,
+        "dim_id":0,
         "n":2,
         "paired_point_id":106
     },
@@ -6236,6 +6806,12 @@
     {
         "point_id":105,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":106
+    },
+    {
+        "point_id":105,
+        "dim_id":0,
         "n":2,
         "paired_point_id":107
     },
@@ -6266,6 +6842,12 @@
     {
         "point_id":106,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":107
+    },
+    {
+        "point_id":106,
+        "dim_id":0,
         "n":2,
         "paired_point_id":108
     },
@@ -6290,6 +6872,12 @@
     {
         "point_id":107,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":108
+    },
+    {
+        "point_id":107,
+        "dim_id":0,
         "n":2,
         "paired_point_id":109
     },
@@ -6308,6 +6896,12 @@
     {
         "point_id":108,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":109
+    },
+    {
+        "point_id":108,
+        "dim_id":0,
         "n":2,
         "paired_point_id":110
     },
@@ -6316,6 +6910,12 @@
         "dim_id":1,
         "n":1,
         "paired_point_id":119
+    },
+    {
+        "point_id":109,
+        "dim_id":0,
+        "n":1,
+        "paired_point_id":110
     },
     {
         "point_id":109,
@@ -6328,6 +6928,12 @@
         "dim_id":1,
         "n":1,
         "paired_point_id":121
+    },
+    {
+        "point_id":111,
+        "dim_id":0,
+        "n":1,
+        "paired_point_id":112
     },
     {
         "point_id":111,
@@ -6386,6 +6992,12 @@
     {
         "point_id":112,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":113
+    },
+    {
+        "point_id":112,
+        "dim_id":0,
         "n":2,
         "paired_point_id":114
     },
@@ -6434,6 +7046,12 @@
     {
         "point_id":113,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":114
+    },
+    {
+        "point_id":113,
+        "dim_id":0,
         "n":2,
         "paired_point_id":115
     },
@@ -6476,6 +7094,12 @@
     {
         "point_id":114,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":115
+    },
+    {
+        "point_id":114,
+        "dim_id":0,
         "n":2,
         "paired_point_id":116
     },
@@ -6512,6 +7136,12 @@
     {
         "point_id":115,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":116
+    },
+    {
+        "point_id":115,
+        "dim_id":0,
         "n":2,
         "paired_point_id":117
     },
@@ -6542,6 +7172,12 @@
     {
         "point_id":116,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":117
+    },
+    {
+        "point_id":116,
+        "dim_id":0,
         "n":2,
         "paired_point_id":118
     },
@@ -6566,6 +7202,12 @@
     {
         "point_id":117,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":118
+    },
+    {
+        "point_id":117,
+        "dim_id":0,
         "n":2,
         "paired_point_id":119
     },
@@ -6584,6 +7226,12 @@
     {
         "point_id":118,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":119
+    },
+    {
+        "point_id":118,
+        "dim_id":0,
         "n":2,
         "paired_point_id":120
     },
@@ -6596,7 +7244,19 @@
     {
         "point_id":119,
         "dim_id":0,
+        "n":1,
+        "paired_point_id":120
+    },
+    {
+        "point_id":119,
+        "dim_id":0,
         "n":2,
+        "paired_point_id":121
+    },
+    {
+        "point_id":120,
+        "dim_id":0,
+        "n":1,
         "paired_point_id":121
     }
 ]

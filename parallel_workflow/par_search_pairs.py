@@ -10,7 +10,7 @@ from par_search_pairs_support import (
 
 
 # Constants
-MAX_PAIRS = 100  # Maximum number of pairs to store for each (point_id, dim_id, n) combination
+MAX_PAIRS = 1000  # Maximum number of pairs to store for each (point_id, dim_id, n) combination
 
 # Main parallelized function
 @cuda.jit
@@ -18,7 +18,7 @@ def par_search_pairs_gen_kernel(data_vector, dim, nlag, lag, lag_tol, azm, azm_t
     idx = cuda.grid(1)
     if idx < data_vector.shape[0]:
         p = data_vector[idx]
-        point_id = p[0] + 1  # Adjust point_id to start from 1
+        point_id = p[0]
         for dim_id in range(dim.size):
             for n in range(1, nlag[dim_id] + 1):
                 for j in range(data_vector.shape[0]):
@@ -70,14 +70,14 @@ def par_search_pairs_gen(data_vector, dim, nlag, lag, lag_tol, azm, azm_tol, ban
     data_vector = cuda.to_device(data_vector)  # Ensure data is on the GPU
     dim = np.array(dim, dtype=np.int32)
     nlag = np.array(nlag, dtype=np.int32)
-    lag = np.array(lag, dtype=np.float32)
-    lag_tol = np.array(lag_tol, dtype=np.float32)
-    azm = np.array(azm, dtype=np.float32)
-    azm_tol = np.array(azm_tol, dtype=np.float32)
-    bandwh = np.array(bandwh, dtype=np.float32)
-    dip = np.array(dip, dtype=np.float32)
-    dip_tol = np.array(dip_tol, dtype=np.float32)
-    bandwv = np.array(bandwv, dtype=np.float32)
+    lag = np.array(lag, dtype=np.float64)
+    lag_tol = np.array(lag_tol, dtype=np.float64)
+    azm = np.array(azm, dtype=np.float64)
+    azm_tol = np.array(azm_tol, dtype=np.float64)
+    bandwh = np.array(bandwh, dtype=np.float64)
+    dip = np.array(dip, dtype=np.float64)
+    dip_tol = np.array(dip_tol, dtype=np.float64)
+    bandwv = np.array(bandwv, dtype=np.float64)
     
     dim = cuda.to_device(dim)
     nlag = cuda.to_device(nlag)

@@ -30,12 +30,12 @@ def par_distance_along_horizontal_bandwidth(x1, y1, z1, x2, y2, z2, azimuth, dip
     dx = cos(dip_rad) * cos(azimuth_rad)
     dy = cos(dip_rad) * sin(azimuth_rad)
     dz = sin(dip_rad)
-    direction_vector = cuda.local.array(3, dtype=np.float32)
+    direction_vector = cuda.local.array(3, dtype=np.float64)
     direction_vector[0] = dx
     direction_vector[1] = dy
     direction_vector[2] = dz
 
-    vector_to_point = cuda.local.array(3, dtype=np.float32)
+    vector_to_point = cuda.local.array(3, dtype=np.float64)
     vector_to_point[0] = x2 - x1
     vector_to_point[1] = y2 - y1
     vector_to_point[2] = z2 - z1
@@ -44,12 +44,12 @@ def par_distance_along_horizontal_bandwidth(x1, y1, z1, x2, y2, z2, azimuth, dip
                          vector_to_point[1] * direction_vector[1] +
                          vector_to_point[2] * direction_vector[2])
     
-    projection_vector = cuda.local.array(3, dtype=np.float32)
+    projection_vector = cuda.local.array(3, dtype=np.float64)
     projection_vector[0] = projection_length * direction_vector[0]
     projection_vector[1] = projection_length * direction_vector[1]
     projection_vector[2] = projection_length * direction_vector[2]
 
-    perpendicular_vector = cuda.local.array(3, dtype=np.float32)
+    perpendicular_vector = cuda.local.array(3, dtype=np.float64)
     perpendicular_vector[0] = vector_to_point[0] - projection_vector[0]
     perpendicular_vector[1] = vector_to_point[1] - projection_vector[1]
     perpendicular_vector[2] = vector_to_point[2] - projection_vector[2]
@@ -65,12 +65,12 @@ def par_distance_along_vertical_bandwidth(x1, y1, z1, x2, y2, z2, azimuth, dip):
     dx = cos(dip_rad) * cos(azimuth_rad)
     dy = cos(dip_rad) * sin(azimuth_rad)
     dz = sin(dip_rad)
-    direction_vector = cuda.local.array(3, dtype=np.float32)
+    direction_vector = cuda.local.array(3, dtype=np.float64)
     direction_vector[0] = dx
     direction_vector[1] = dy
     direction_vector[2] = dz
 
-    vector_to_point = cuda.local.array(3, dtype=np.float32)
+    vector_to_point = cuda.local.array(3, dtype=np.float64)
     vector_to_point[0] = x2 - x1
     vector_to_point[1] = y2 - y1
     vector_to_point[2] = z2 - z1
@@ -79,12 +79,12 @@ def par_distance_along_vertical_bandwidth(x1, y1, z1, x2, y2, z2, azimuth, dip):
                          vector_to_point[1] * direction_vector[1] +
                          vector_to_point[2] * direction_vector[2])
 
-    projection_vector = cuda.local.array(3, dtype=np.float32)
+    projection_vector = cuda.local.array(3, dtype=np.float64)
     projection_vector[0] = projection_length * direction_vector[0]
     projection_vector[1] = projection_length * direction_vector[1]
     projection_vector[2] = projection_length * direction_vector[2]
 
-    perpendicular_vector = cuda.local.array(3, dtype=np.float32)
+    perpendicular_vector = cuda.local.array(3, dtype=np.float64)
     perpendicular_vector[0] = vector_to_point[0] - projection_vector[0]
     perpendicular_vector[1] = vector_to_point[1] - projection_vector[1]
     perpendicular_vector[2] = vector_to_point[2] - projection_vector[2]
@@ -107,7 +107,7 @@ def par_point_distance_to_shifted_plane(x1, y1, z1, x2, y2, z2, lag, azimuth, di
     ny = cos(dip_rad) * sin(azimuth_rad)
     nz = sin(dip_rad)
     
-    normal_vector = cuda.local.array(3, dtype=np.float32)
+    normal_vector = cuda.local.array(3, dtype=np.float64)
     normal_vector[0] = nx
     normal_vector[1] = ny
     normal_vector[2] = nz
@@ -118,7 +118,7 @@ def par_point_distance_to_shifted_plane(x1, y1, z1, x2, y2, z2, lag, azimuth, di
     z_shifted = z1 + lag * nz
 
     # Calculate the vector from the shifted point to the second point
-    vector_to_point = cuda.local.array(3, dtype=np.float32)
+    vector_to_point = cuda.local.array(3, dtype=np.float64)
     vector_to_point[0] = x2 - x_shifted
     vector_to_point[1] = y2 - y_shifted
     vector_to_point[2] = z2 - z_shifted
