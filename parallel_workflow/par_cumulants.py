@@ -52,55 +52,77 @@ def associate_grade(df_data, pairs_file):
 
     return df_pairs
 
-# Function to compute the 3rd order cumulant using CuPy and Numba
 @cuda.jit
-def compute_3rd_order_cumulant_kernel(point_id_values, paired_point_id_values_dir_0, paired_point_id_values_dir_1, result):
+def compute_3rd_order_cumulant_kernel(dim_id, n_values, point_id_values, paired_point_id_values_dir_0, paired_point_id_values_dir_1, result, max_n_dim_0, max_n_dim_1):
     i = cuda.grid(1)
-    if i < point_id_values.size:
-        result[i] = point_id_values[i] * paired_point_id_values_dir_0[i] * paired_point_id_values_dir_1[i]
+    if i < result.shape[0]:
+        dir_0_nlag = i % max_n_dim_0 + 1
+        dir_1_nlag = i // max_n_dim_0 + 1
+        
+        # Initialize variables to store intermediate results
+        cumulant_sum = 0.0
+        count = 0
+
+        # Perform the merging, filtering, and cumulant computation
+        for j in range(n_values.size):
+            if dim_id[j] == 0 and n_values[j] == dir_0_nlag:
+                point_id_0 = point_id_values[j]
+                for k in range(n_values.size):
+                    if dim_id[k] == 1 and n_values[k] == dir_1_nlag and point_id_values[k] == point_id_0:
+                        # Calculate the 3rd order cumulant
+                        cumulant_sum += (point_id_values[j] * paired_point_id_values_dir_0[j] * paired_point_id_values_dir_1[k])
+                        count += 1
+        
+        # Store the result (average cumulant) if count is not zero
+        if count > 0:
+            result[i] = cumulant_sum / count
+        else:
+            result[i] = 0.0
 
 def compute_3rd_order_cumulant(df_pairs):
     # Convert to CuPy arrays
     dim_id = cp.array(df_pairs['dim_id'].values)
     n_values = cp.array(df_pairs['n'].values)
+    point_id_values = cp.array(df_pairs['point_id_value'].values)
+    paired_point_id_values_dir_0 = cp.array(df_pairs['paired_point_id_value'].values)
+    paired_point_id_values_dir_1 = cp.array(df_pairs['paired_point_id_value_dir_1'].values)
     
     # Determine the maximum values of n for each dim_id (0 and 1)
-    max_n_dim_0 = int(cp.max(n_values[dim_id == 0]))  # Convert to Python int
-    max_n_dim_1 = int(cp.max(n_values[dim_id == 1]))  # Convert to Python int
-    
-    # Generate all combinations of values for each column
-    combinations = list(itertools.product(range(1, max_n_dim_0 + 1), range(1, max_n_dim_1 + 1)))
-    df_generated = pd.DataFrame(combinations, columns=['dir_0_nlag', 'dir_1_nlag'])
-
-    # Merge for direction 0
-    merged_0 = df_generated.merge(df_pairs[df_pairs['dim_id'] == 0], left_on='dir_0_nlag', right_on='n', how='left')
-
-    # Merge for direction 1
-    result = merged_0.merge(df_pairs[df_pairs['dim_id'] == 1], left_on='dir_1_nlag', right_on='n', how='left', suffixes=('', '_dir_1'))
-
-    # Filter rows where all point_id_dir_0 and point_id_dir_1 match
-    mask = (result['point_id'] == result['point_id_dir_1'])
-    result = result[mask]
+    max_n_dim_0 = int(cp.max(n_values[dim_id == 0]))
+    max_n_dim_1 = int(cp.max(n_values[dim_id == 1]))
     
     # Allocate memory for the result
-    E = cp.empty(result.shape[0], dtype=cp.float64)
+    result = cp.zeros((max_n_dim_0 * max_n_dim_1), dtype=cp.float64)
     
-    # Launch the kernel to compute E
+    # Launch the kernel to perform merging, filtering, and cumulant computation
     threads_per_block = 128
-    blocks_per_grid = (E.size + threads_per_block - 1) // threads_per_block
+    blocks_per_grid = (result.size + threads_per_block - 1) // threads_per_block
     compute_3rd_order_cumulant_kernel[blocks_per_grid, threads_per_block](
-        cp.array(result['point_id_value'].values),
-        cp.array(result['paired_point_id_value'].values),
-        cp.array(result['paired_point_id_value_dir_1'].values),
-        E
+        dim_id,
+        n_values,
+        point_id_values,
+        paired_point_id_values_dir_0,
+        paired_point_id_values_dir_1,
+        result,
+        max_n_dim_0,
+        max_n_dim_1
     )
     
-    # Compute the average of E and group by the nlag columns
-    result['E'] = cp.asnumpy(E)
-    final_result = result.groupby(['dir_0_nlag', 'dir_1_nlag'])['E'].mean().reset_index()
-    final_result = final_result.rename(columns={'E': 'k_3'})
-
-    return final_result
+    # Reshape the result array to 2D for easier processing
+    result = result.reshape((max_n_dim_1, max_n_dim_0))
+    
+    # Convert back to a DataFrame
+    dir_0_nlag = cp.arange(1, max_n_dim_0 + 1)
+    dir_1_nlag = cp.arange(1, max_n_dim_1 + 1)
+    dir_0_nlag, dir_1_nlag = cp.meshgrid(dir_0_nlag, dir_1_nlag)
+    
+    final_result_df = pd.DataFrame({
+        'dir_0_nlag': cp.asnumpy(dir_0_nlag.ravel()),
+        'dir_1_nlag': cp.asnumpy(dir_1_nlag.ravel()),
+        'k_3': cp.asnumpy(result.ravel())
+    })
+    
+    return final_result_df
 
 @cuda.jit
 def compute_4th_order_cumulant_kernel(point_id_values, paired_point_id_values_dir_0, paired_point_id_values_dir_1, paired_point_id_values_dir_2, E_0):
