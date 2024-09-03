@@ -102,7 +102,6 @@ def compute_3rd_order_cumulant(df_pairs):
 
     return final_result
 
-# Function to compute the 4th order cumulant using CuPy and Numba
 @cuda.jit
 def compute_4th_order_cumulant_kernel(point_id_values, paired_point_id_values_dir_0, paired_point_id_values_dir_1, paired_point_id_values_dir_2, E_0):
     i = cuda.grid(1)
@@ -113,53 +112,89 @@ def compute_4th_order_cumulant(df_pairs):
     # Convert to CuPy arrays
     dim_id = cp.array(df_pairs['dim_id'].values)
     n_values = cp.array(df_pairs['n'].values)
-    
+    point_id_values = cp.array(df_pairs['point_id_value'].values)
+
     # Determine the maximum values of n for each dim_id
-    max_n_dim_0 = int(cp.max(n_values[dim_id == 0]))  # Convert to Python int
-    max_n_dim_1 = int(cp.max(n_values[dim_id == 1]))  # Convert to Python int
-    max_n_dim_2 = int(cp.max(n_values[dim_id == 2]))  # Convert to Python int
-    
+    max_n_dim_0 = int(cp.max(n_values[dim_id == 0]))
+    max_n_dim_1 = int(cp.max(n_values[dim_id == 1]))
+    max_n_dim_2 = int(cp.max(n_values[dim_id == 2]))
+
     # Generate all combinations of values for each column
-    combinations = list(itertools.product(range(1, max_n_dim_0 + 1), range(1, max_n_dim_1 + 1), range(1, max_n_dim_2 + 1)))
-    df_generated = pd.DataFrame(combinations, columns=['dir_0_nlag', 'dir_1_nlag', 'dir_2_nlag'])
+    dir_0_nlag, dir_1_nlag, dir_2_nlag = cp.meshgrid(
+        cp.arange(1, max_n_dim_0 + 1),
+        cp.arange(1, max_n_dim_1 + 1),
+        cp.arange(1, max_n_dim_2 + 1),
+        indexing='ij'
+    )
+    dir_0_nlag = dir_0_nlag.ravel()
+    dir_1_nlag = dir_1_nlag.ravel()
+    dir_2_nlag = dir_2_nlag.ravel()
 
-    # Merge for direction 0
-    merged_0 = df_generated.merge(df_pairs[df_pairs['dim_id'] == 0], left_on='dir_0_nlag', right_on='n', how='left')
+    # Prepare masks for each dimension
+    mask_0 = (dim_id == 0)
+    mask_1 = (dim_id == 1)
+    mask_2 = (dim_id == 2)
 
-    # Merge for direction 1
-    merged_1 = merged_0.merge(df_pairs[df_pairs['dim_id'] == 1], left_on='dir_1_nlag', right_on='n', how='left', suffixes=('', '_dir_1'))
+    # Extract values for each dimension
+    n_values_0 = n_values[mask_0]
+    n_values_1 = n_values[mask_1]
+    n_values_2 = n_values[mask_2]
 
-    # Merge for direction 2
-    result = merged_1.merge(df_pairs[df_pairs['dim_id'] == 2], left_on='dir_2_nlag', right_on='n', how='left', suffixes=('', '_dir_2'))
+    point_id_values_0 = point_id_values[mask_0]
+    point_id_values_1 = point_id_values[mask_1]
+    point_id_values_2 = point_id_values[mask_2]
 
-    # Filter rows where all point_id_dir_0, point_id_dir_1, and point_id_dir_2 match
-    mask = (result['point_id'] == result['point_id_dir_1']) & (result['point_id_dir_1'] == result['point_id_dir_2'])
-    result = result[mask]
+    # Perform the merging operation using broadcasting
+    valid_rows_0 = cp.isin(n_values_0, dir_0_nlag)
+    valid_rows_1 = cp.isin(n_values_1, dir_1_nlag)
+    valid_rows_2 = cp.isin(n_values_2, dir_2_nlag)
 
-    # Allocate memory for the result
-    E_0 = cp.empty(result.shape[0], dtype=cp.float64)
-    
+    # Filter point_id_values for valid rows, matching each dimension separately
+    paired_point_id_values_dir_0 = point_id_values_0[valid_rows_0]
+    paired_point_id_values_dir_1 = point_id_values_1[valid_rows_1]
+    paired_point_id_values_dir_2 = point_id_values_2[valid_rows_2]
+
+    # Compute E_1, E_2, E_3 means
+    E_1 = (paired_point_id_values_dir_0 * paired_point_id_values_dir_1).mean() * \
+          paired_point_id_values_dir_2.mean()
+
+    E_2 = (paired_point_id_values_dir_0 * paired_point_id_values_dir_2).mean() * \
+          paired_point_id_values_dir_1.mean()
+
+    E_3 = (paired_point_id_values_dir_1 * paired_point_id_values_dir_2).mean() * \
+          paired_point_id_values_dir_0.mean()
+
+    # Prepare arrays for the kernel computation
+    E_0 = cp.empty(len(dir_0_nlag), dtype=cp.float64)
+
     # Launch the kernel to compute E_0
     threads_per_block = 128
     blocks_per_grid = (E_0.size + threads_per_block - 1) // threads_per_block
     compute_4th_order_cumulant_kernel[blocks_per_grid, threads_per_block](
-        cp.array(result['point_id_value'].values),
-        cp.array(result['paired_point_id_value'].values),
-        cp.array(result['paired_point_id_value_dir_1'].values),
-        cp.array(result['paired_point_id_value_dir_2'].values),
+        point_id_values_0[valid_rows_0],  # Pass the valid values directly to the kernel
+        paired_point_id_values_dir_0,
+        paired_point_id_values_dir_1,
+        paired_point_id_values_dir_2,
         E_0
     )
 
-    # Convert back to numpy for further computation
-    E_0 = cp.asnumpy(E_0)
-    
-    # Compute other components
-    E_1 = (result['point_id_value'] * result['paired_point_id_value']).mean() * (result['paired_point_id_value_dir_1'] * result['paired_point_id_value_dir_2']).mean()
-    E_2 = (result['point_id_value'] * result['paired_point_id_value_dir_1']).mean() * (result['paired_point_id_value'] * result['paired_point_id_value_dir_2']).mean()
-    E_3 = (result['point_id_value'] * result['paired_point_id_value_dir_2']).mean() * (result['paired_point_id_value'] * result['paired_point_id_value_dir_1']).mean()
+    # Compute the fourth-order cumulant: k_4 = E_0 - (E_1 + E_2 + E_3)
+    k_4 = E_0 - (E_1 + E_2 + E_3)
 
-    # Compute the fourth-order cumulant
-    result['k_4'] = E_0 - (E_1 + E_2 + E_3)
-    final_result = result.groupby(['dir_0_nlag', 'dir_1_nlag', 'dir_2_nlag'])['k_4'].mean().reset_index()
+    # Convert back to CPU for further processing
+    dir_0_nlag = cp.asnumpy(dir_0_nlag)
+    dir_1_nlag = cp.asnumpy(dir_1_nlag)
+    dir_2_nlag = cp.asnumpy(dir_2_nlag)
+    k_4 = cp.asnumpy(k_4)
+
+    # Group by dir_0_nlag, dir_1_nlag, dir_2_nlag and average k_4
+    df_result = pd.DataFrame({
+        'dir_0_nlag': dir_0_nlag,
+        'dir_1_nlag': dir_1_nlag,
+        'dir_2_nlag': dir_2_nlag,
+        'k_4': k_4
+    })
+
+    final_result = df_result.groupby(['dir_0_nlag', 'dir_1_nlag', 'dir_2_nlag']).mean().reset_index()
 
     return final_result

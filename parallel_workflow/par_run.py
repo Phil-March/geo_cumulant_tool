@@ -1,6 +1,7 @@
 import json
 import numpy as np
 import pandas as pd
+import cupy as cp
 import time
 import os
 from par_search_pairs import par_search_pairs_gen
@@ -136,6 +137,9 @@ def compute_cumulants():
     selected_pair_file_path = os.path.join(output_dir, selected_pair_file_name)
     print(f"Selected pair file: {selected_pair_file_path}")
 
+    # Initialize a custom memory pool
+    memory_pool = cp.cuda.MemoryPool()
+    cp.cuda.set_allocator(memory_pool.malloc)
     # Measure cumulative time for the entire process
     start_time = time.time()
 
@@ -165,6 +169,7 @@ def compute_cumulants():
 
     # End time for the cumulative process
     end_time = time.time()
+    memory_pool.free_all_blocks()
     print(f"Total time for computing cumulants: {end_time - start_time:.2f} seconds.")
     print(f"Cumulant results saved to: {output_cumulant_file_path}")
 
