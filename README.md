@@ -83,7 +83,7 @@ Before running the Geostatistical Computation Cumulant Tool, ensure that the fol
 In addition to the software requirements, the following Python libraries need to be installed. These libraries are not included by default with Python and must be installed via `pip`. You can install all required libraries using the command:
 
 ```bash
-pip install pandas numpy cupy numba
+pip install pandas numpy numba
 ```
 
 # How to Use
