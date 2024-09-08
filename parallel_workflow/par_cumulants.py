@@ -213,13 +213,14 @@ def compute_4th_order_cumulant(df_pairs, num_chunks=4):
     # Create cuDF DataFrame with the generated combinations
     df_generated = cudf.DataFrame(combinations, columns=columns)
 
-    # Split the df_generated into chunks using cupy
-    chunks = cp.array_split(df_generated.to_pandas(), num_chunks)  # Convert to pandas for array split compatibility
-
-    # Process each chunk sequentially and store the results
+    # Chunking using cuDF's native slicing
+    chunk_size = len(df_generated) // num_chunks
     results = []
-    for chunk in chunks:
-        chunk = cudf.DataFrame.from_pandas(chunk)  # Convert back to cuDF after splitting
+
+    for i in range(num_chunks):
+        start_idx = i * chunk_size
+        end_idx = (i + 1) * chunk_size if i < num_chunks - 1 else len(df_generated)
+        chunk = df_generated.iloc[start_idx:end_idx]
         chunk_result = process_chunk(chunk, df_pairs)
         results.append(chunk_result)
 
