@@ -144,6 +144,7 @@ def compute_4th_order_cumulant(df_pairs, num_chunks=10):
             'paired_point_id': 'paired_point_id_dir_1',
             'paired_point_id_value': 'paired_point_id_value_dir_1'
         })
+        result = result.dropna(subset=['point_id_dir_0', 'point_id_dir_1'])
 
         # Merge for direction 2
         result = result.merge(
@@ -163,36 +164,6 @@ def compute_4th_order_cumulant(df_pairs, num_chunks=10):
         result = result.dropna(subset=['point_id_dir_0', 'point_id_dir_1', 'point_id_dir_2'])
         result = result[(result['point_id_dir_0'] == result['point_id_dir_1']) & 
                         (result['point_id_dir_1'] == result['point_id_dir_2'])]
-
-        # Select final columns
-        final_columns = ['dir_0_nlag', 'dir_1_nlag', 'dir_2_nlag', 'point_id_value'] + [
-            'paired_point_id_dir_0', 'paired_point_id_value_dir_0',
-            'paired_point_id_dir_1', 'paired_point_id_value_dir_1',
-            'paired_point_id_dir_2', 'paired_point_id_value_dir_2'
-        ]
-        result = result[final_columns]
-
-        # Compute mu_4 = E[Z(u)⋅Z(u+h1)⋅Z(u+h2)⋅Z(u+h3)]
-        result['E_0'] = (result['point_id_value'] * 
-                         result['paired_point_id_value_dir_0'] * 
-                         result['paired_point_id_value_dir_1'] * 
-                         result['paired_point_id_value_dir_2'])
-
-        # Compute E[Z(u),Z(u + h1)] ⋅ E[Z(u + h2),Z(u + h3)]
-        result['E_1'] = (result['point_id_value'] * result['paired_point_id_value_dir_0']).mean() * \
-                        (result['paired_point_id_value_dir_1'] * result['paired_point_id_value_dir_2']).mean()
-
-        # Compute E[Z(u),Z(u + h2)] ⋅ E[Z(u + h1),Z(u + h3)]
-        result['E_2'] = (result['point_id_value'] * result['paired_point_id_value_dir_1']).mean() * \
-                        (result['paired_point_id_value_dir_0'] * result['paired_point_id_value_dir_2']).mean()
-
-        # Compute E[Z(u),Z(u + h3)] ⋅ E[Z(u+ h1),Z(u + h2)]
-        result['E_3'] = (result['point_id_value'] * result['paired_point_id_value_dir_2']).mean() * \
-                        (result['paired_point_id_value_dir_0'] * result['paired_point_id_value_dir_1']).mean()
-
-        # Compute the fourth-order cumulant: 
-        # mu_4 - (E_1 + E_2 + E_3)
-        result['k_4'] = result['E_0'] - (result['E_1'] + result['E_2'] + result['E_3'])
 
         return result
 
@@ -226,6 +197,30 @@ def compute_4th_order_cumulant(df_pairs, num_chunks=10):
 
     # Concatenate all results using cuDF concat
     concatenated_result = cudf.concat(results)
+
+    # Now compute the following cumulant-related calculations after chunking and concatenation:
+
+    # Compute mu_4 = E[Z(u)⋅Z(u+h1)⋅Z(u+h2)⋅Z(u+h3)]
+    concatenated_result['E_0'] = (concatenated_result['point_id_value'] * 
+                                  concatenated_result['paired_point_id_value_dir_0'] * 
+                                  concatenated_result['paired_point_id_value_dir_1'] * 
+                                  concatenated_result['paired_point_id_value_dir_2'])
+
+    # Compute E[Z(u),Z(u + h1)] ⋅ E[Z(u + h2),Z(u + h3)]
+    concatenated_result['E_1'] = (concatenated_result['point_id_value'] * concatenated_result['paired_point_id_value_dir_0']).mean() * \
+                                 (concatenated_result['paired_point_id_value_dir_1'] * concatenated_result['paired_point_id_value_dir_2']).mean()
+
+    # Compute E[Z(u),Z(u + h2)] ⋅ E[Z(u + h1),Z(u + h3)]
+    concatenated_result['E_2'] = (concatenated_result['point_id_value'] * concatenated_result['paired_point_id_value_dir_1']).mean() * \
+                                 (concatenated_result['paired_point_id_value_dir_0'] * concatenated_result['paired_point_id_value_dir_2']).mean()
+
+    # Compute E[Z(u),Z(u + h3)] ⋅ E[Z(u+ h1),Z(u + h2)]
+    concatenated_result['E_3'] = (concatenated_result['point_id_value'] * concatenated_result['paired_point_id_value_dir_2']).mean() * \
+                                 (concatenated_result['paired_point_id_value_dir_0'] * concatenated_result['paired_point_id_value_dir_1']).mean()
+
+    # Compute the fourth-order cumulant: 
+    # mu_4 - (E_1 + E_2 + E_3)
+    concatenated_result['k_4'] = concatenated_result['E_0'] - (concatenated_result['E_1'] + concatenated_result['E_2'] + concatenated_result['E_3'])
 
     # Group by dir_0_nlag, dir_1_nlag, and dir_2_nlag columns and average the cumulant
     final_result = concatenated_result.groupby(columns)['k_4'].mean().reset_index()
