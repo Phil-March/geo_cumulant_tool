@@ -143,6 +143,7 @@ def compute_4th_order_cumulant(df_pairs):
         'paired_point_id': 'paired_point_id_dir_1',
         'paired_point_id_value': 'paired_point_id_value_dir_1'
     })
+    result = result.dropna(subset=['point_id_dir_0', 'point_id_dir_1'])
 
     # Merge for direction 2
     result = result.merge(
