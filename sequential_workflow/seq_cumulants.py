@@ -35,11 +35,55 @@ def associate_grade(df_data, pairs_file):
     return df_pairs
 
 
-def compute_3rd_order_cumulant(df_pairs):
+def compute_3rd_order_cumulant(df_pairs, num_chunks=4):
+    def process_chunk(chunk, df_pairs):
+        # Merge for direction 0
+        result = chunk.merge(
+            df_pairs[df_pairs['dim_id'] == 0], 
+            left_on='dir_0_nlag', 
+            right_on='n', 
+            how='left'
+        )
+        result = result.rename(columns={
+            'point_id': 'point_id_dir_0',
+            'paired_point_id': 'paired_point_id_dir_0',
+            'paired_point_id_value': 'paired_point_id_value_dir_0'
+        })
+
+        # Merge for direction 1
+        result = result.merge(
+            df_pairs[df_pairs['dim_id'] == 1], 
+            left_on='dir_1_nlag', 
+            right_on='n', 
+            how='left',
+            suffixes=('', '_dir_1')
+        )
+        result = result.rename(columns={
+            'point_id': 'point_id_dir_1',
+            'paired_point_id': 'paired_point_id_dir_1',
+            'paired_point_id_value': 'paired_point_id_value_dir_1'
+        })
+
+        # Filter rows where all point_id_dir_0 and point_id_dir_1 match
+        result = result.dropna(subset=['point_id_dir_0', 'point_id_dir_1'])
+        result = result[result['point_id_dir_0'] == result['point_id_dir_1']]
+
+        # Select final columns
+        final_columns = ['dir_0_nlag', 'dir_1_nlag', 'point_id_value'] + [
+            'paired_point_id_dir_0', 'paired_point_id_value_dir_0',
+            'paired_point_id_dir_1', 'paired_point_id_value_dir_1'
+        ]
+        result = result[final_columns]
+
+        # Add new column 'E' as the product of point_id_value and the paired_point_id_values
+        result['E'] = result['point_id_value'] * result['paired_point_id_value_dir_0'] * result['paired_point_id_value_dir_1']
+
+        return result
+
     # Determine the maximum values of n for each dim_id (0 and 1)
     max_n_dim_0 = df_pairs[df_pairs['dim_id'] == 0]['n'].max()
     max_n_dim_1 = df_pairs[df_pairs['dim_id'] == 1]['n'].max()
-    
+
     # Use the maximum n values to define the nlag_dir
     nlag_dir = [max_n_dim_0, max_n_dim_1]
 
@@ -52,55 +96,99 @@ def compute_3rd_order_cumulant(df_pairs):
     # Create DataFrame with the generated combinations
     df_generated = pd.DataFrame(combinations, columns=columns)
 
-    # Merge for direction 0
-    result = df_generated.merge(
-        df_pairs[df_pairs['dim_id'] == 0], 
-        left_on='dir_0_nlag', 
-        right_on='n', 
-        how='left'
-    )
-    result = result.rename(columns={
-        'point_id': 'point_id_dir_0',
-        'paired_point_id': 'paired_point_id_dir_0',
-        'paired_point_id_value': 'paired_point_id_value_dir_0'
-    })
+    # Split the df_generated into chunks
+    chunks = np.array_split(df_generated, num_chunks)
 
-    # Merge for direction 1
-    result = result.merge(
-        df_pairs[df_pairs['dim_id'] == 1], 
-        left_on='dir_1_nlag', 
-        right_on='n', 
-        how='left',
-        suffixes=('', '_dir_1')
-    )
-    result = result.rename(columns={
-        'point_id': 'point_id_dir_1',
-        'paired_point_id': 'paired_point_id_dir_1',
-        'paired_point_id_value': 'paired_point_id_value_dir_1'
-    })
+    # Process each chunk sequentially and store the results
+    results = []
+    for chunk in chunks:
+        chunk_result = process_chunk(chunk, df_pairs)
+        results.append(chunk_result)
 
-    # Filter rows where all point_id_dir_0 and point_id_dir_1 match
-    result = result.dropna(subset=['point_id_dir_0', 'point_id_dir_1'])
-    result = result[result['point_id_dir_0'] == result['point_id_dir_1']]
-
-    # Select final columns
-    final_columns = columns + ['point_id_value'] + [
-        'paired_point_id_dir_0', 'paired_point_id_value_dir_0',
-        'paired_point_id_dir_1', 'paired_point_id_value_dir_1'
-    ]
-    result = result[final_columns]
-
-    # Add new column 'E' as the product of point_id_value and the paired_point_id_values
-    result['E'] = result['point_id_value'] * result['paired_point_id_value_dir_0'] * result['paired_point_id_value_dir_1']
+    # Concatenate all results
+    concatenated_result = pd.concat(results)
 
     # Group by dir_0_nlag and dir_1_nlag columns and average E
-    final_result = result.groupby(columns)['E'].mean().reset_index()
+    final_result = concatenated_result.groupby(columns)['E'].mean().reset_index()
     final_result = final_result.rename(columns={'E': 'k_3'})
 
     return final_result
 
 
-def compute_4th_order_cumulant(df_pairs):
+def compute_4th_order_cumulant(df_pairs, num_chunks=6):
+    def process_chunk(chunk, df_pairs):
+        # Merge for direction 0
+        merged_dir_0 = chunk.merge(
+            df_pairs[df_pairs['dim_id'] == 0], 
+            left_on='dir_0_nlag', 
+            right_on='n', 
+            how='left'
+        ).rename(columns={
+            'point_id': 'point_id_dir_0',
+            'paired_point_id': 'paired_point_id_dir_0',
+            'paired_point_id_value': 'paired_point_id_value_dir_0'
+        })
+
+        # Merge for direction 1
+        merged_dir_1 = merged_dir_0.merge(
+            df_pairs[df_pairs['dim_id'] == 1], 
+            left_on='dir_1_nlag', 
+            right_on='n', 
+            how='left',
+            suffixes=('', '_dir_1')
+        ).rename(columns={
+            'point_id': 'point_id_dir_1',
+            'paired_point_id': 'paired_point_id_dir_1',
+            'paired_point_id_value': 'paired_point_id_value_dir_1'
+        })
+
+        # Merge for direction 2
+        merged_result = merged_dir_1.merge(
+            df_pairs[df_pairs['dim_id'] == 2], 
+            left_on='dir_2_nlag', 
+            right_on='n', 
+            how='left',
+            suffixes=('', '_dir_2')
+        ).rename(columns={
+            'point_id': 'point_id_dir_2',
+            'paired_point_id': 'paired_point_id_dir_2',
+            'paired_point_id_value': 'paired_point_id_value_dir_2'
+        })
+
+        # Filter rows where all point_id_dir_0, point_id_dir_1, and point_id_dir_2 match
+        merged_result = merged_result.dropna(subset=['point_id_dir_0', 'point_id_dir_1', 'point_id_dir_2'])
+        merged_result = merged_result[(merged_result['point_id_dir_0'] == merged_result['point_id_dir_1']) & 
+                                      (merged_result['point_id_dir_1'] == merged_result['point_id_dir_2'])]
+
+        # Select final columns
+        final_columns = ['dir_0_nlag', 'dir_1_nlag', 'dir_2_nlag', 'point_id_value'] + [
+            'paired_point_id_dir_0', 'paired_point_id_value_dir_0',
+            'paired_point_id_dir_1', 'paired_point_id_value_dir_1',
+            'paired_point_id_dir_2', 'paired_point_id_value_dir_2'
+        ]
+        merged_result = merged_result[final_columns]
+
+        # Compute E[Z(u)⋅Z(u+h1)⋅Z(u+h2)⋅Z(u+h3)]
+        merged_result['E_0'] = (merged_result['point_id_value'] * merged_result['paired_point_id_value_dir_0'] * merged_result['paired_point_id_value_dir_1'] * merged_result['paired_point_id_value_dir_2'])
+
+        # Compute E[Z(u),Z(u + h1)] ⋅ E[Z(u + h2),Z(u + h3)]
+        merged_result['E_1'] = (merged_result['point_id_value'] * merged_result['paired_point_id_value_dir_0']).mean() * \
+                               (merged_result['paired_point_id_value_dir_1'] * merged_result['paired_point_id_value_dir_2']).mean()
+
+        # Compute E[Z(u),Z(u + h2)] ⋅ E[Z(u + h1),Z(u + h3)]
+        merged_result['E_2'] = (merged_result['point_id_value'] * merged_result['paired_point_id_value_dir_1']).mean() * \
+                               (merged_result['paired_point_id_value_dir_0'] * merged_result['paired_point_id_value_dir_2']).mean()
+
+        # Compute E[Z(u),Z(u + h3)] ⋅ E[Z(u+ h1),Z(u + h2)]
+        merged_result['E_3'] = (merged_result['point_id_value'] * merged_result['paired_point_id_value_dir_2']).mean() * \
+                               (merged_result['paired_point_id_value_dir_0'] * merged_result['paired_point_id_value_dir_1']).mean()
+
+        # Compute the fourth-order cumulant: 
+        # mu_4 - (E_1 + E_2 + E_3)
+        merged_result['k_4'] = merged_result['E_0'] - (merged_result['E_1'] + merged_result['E_2'] + merged_result['E_3'])
+
+        return merged_result
+
     # Determine the maximum values of n for each dim_id
     max_n_dim_0 = df_pairs[df_pairs['dim_id'] == 0]['n'].max()
     max_n_dim_1 = df_pairs[df_pairs['dim_id'] == 1]['n'].max()
@@ -118,78 +206,20 @@ def compute_4th_order_cumulant(df_pairs):
     # Create DataFrame with the generated combinations
     df_generated = pd.DataFrame(combinations, columns=columns)
 
-    # Merge for direction 0
-    merged_dir_0 = df_generated.merge(
-        df_pairs[df_pairs['dim_id'] == 0], 
-        left_on='dir_0_nlag', 
-        right_on='n', 
-        how='left'
-    ).rename(columns={
-        'point_id': 'point_id_dir_0',
-        'paired_point_id': 'paired_point_id_dir_0',
-        'paired_point_id_value': 'paired_point_id_value_dir_0'
-    })
+    # Split the df_generated into chunks
+    chunks = np.array_split(df_generated, num_chunks)
 
-    # Merge for direction 1
-    merged_dir_1 = merged_dir_0.merge(
-        df_pairs[df_pairs['dim_id'] == 1], 
-        left_on='dir_1_nlag', 
-        right_on='n', 
-        how='left',
-        suffixes=('', '_dir_1')
-    ).rename(columns={
-        'point_id': 'point_id_dir_1',
-        'paired_point_id': 'paired_point_id_dir_1',
-        'paired_point_id_value': 'paired_point_id_value_dir_1'
-    })
+    # Process each chunk sequentially and store the results
+    results = []
+    for chunk in chunks:
+        chunk_result = process_chunk(chunk, df_pairs)
+        results.append(chunk_result)
 
-    # Merge for direction 2
-    merged_result = merged_dir_1.merge(
-        df_pairs[df_pairs['dim_id'] == 2], 
-        left_on='dir_2_nlag', 
-        right_on='n', 
-        how='left',
-        suffixes=('', '_dir_2')
-    ).rename(columns={
-        'point_id': 'point_id_dir_2',
-        'paired_point_id': 'paired_point_id_dir_2',
-        'paired_point_id_value': 'paired_point_id_value_dir_2'
-    })
-
-    # Filter rows where all point_id_dir_0, point_id_dir_1, and point_id_dir_2 match
-    merged_result = merged_result.dropna(subset=['point_id_dir_0', 'point_id_dir_1', 'point_id_dir_2'])
-    merged_result = merged_result[(merged_result['point_id_dir_0'] == merged_result['point_id_dir_1']) & 
-                                  (merged_result['point_id_dir_1'] == merged_result['point_id_dir_2'])]
-
-    # Select final columns
-    final_columns = columns + ['point_id_value'] + [
-        'paired_point_id_dir_0', 'paired_point_id_value_dir_0',
-        'paired_point_id_dir_1', 'paired_point_id_value_dir_1',
-        'paired_point_id_dir_2', 'paired_point_id_value_dir_2'
-    ]
-    merged_result = merged_result[final_columns]
-
-    # Compute E[Z(u)⋅Z(u+h1)⋅Z(u+h2)⋅Z(u+h3)]
-    merged_result['E_0'] = (merged_result['point_id_value'] * merged_result['paired_point_id_value_dir_0'] * merged_result['paired_point_id_value_dir_1'] * merged_result['paired_point_id_value_dir_2'])
-
-    # Compute E[Z(u),Z(u + h1)] ⋅ E[Z(u + h2),Z(u + h3)]
-    merged_result['E_1'] = (merged_result['point_id_value'] * merged_result['paired_point_id_value_dir_0']).mean() * \
-                           (merged_result['paired_point_id_value_dir_1'] * merged_result['paired_point_id_value_dir_2']).mean()
-
-    # Compute E[Z(u),Z(u + h2)] ⋅ E[Z(u + h1),Z(u + h3)]
-    merged_result['E_2'] = (merged_result['point_id_value'] * merged_result['paired_point_id_value_dir_1']).mean() * \
-                           (merged_result['paired_point_id_value_dir_0'] * merged_result['paired_point_id_value_dir_2']).mean()
-
-    # Compute E[Z(u),Z(u + h3)] ⋅ E[Z(u+ h1),Z(u + h2)]
-    merged_result['E_3'] = (merged_result['point_id_value'] * merged_result['paired_point_id_value_dir_2']).mean() * \
-                           (merged_result['paired_point_id_value_dir_0'] * merged_result['paired_point_id_value_dir_1']).mean()
-
-    # Compute the fourth-order cumulant: 
-    # mu_4 - (E_1 + E_2 + E_3)
-    merged_result['k_4'] = merged_result['E_0'] - (merged_result['E_1'] + merged_result['E_2'] + merged_result['E_3'])
+    # Concatenate all results
+    concatenated_result = pd.concat(results)
 
     # Group by dir_0_nlag, dir_1_nlag, and dir_2_nlag columns and average the cumulant
-    final_result = merged_result.groupby(columns)['k_4'].mean().reset_index()
+    final_result = concatenated_result.groupby(columns)['k_4'].mean().reset_index()
 
     # Return the final cumulative result
     return final_result
