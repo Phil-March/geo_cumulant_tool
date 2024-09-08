@@ -116,7 +116,7 @@ def compute_3rd_order_cumulant(df_pairs, num_chunks=4):
     return final_result
 
 
-def compute_4th_order_cumulant(df_pairs, num_chunks=4):
+def compute_4th_order_cumulant(df_pairs, num_chunks=10):
     def process_chunk(chunk, df_pairs):
         # Merge for direction 0
         result = chunk.merge(
