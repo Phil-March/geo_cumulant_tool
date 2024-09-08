@@ -119,7 +119,8 @@ def compute_cumulants():
     print(f"Selected data file: {selected_data_file_path}")
 
     # List all files in the output directory
-    output_files = [f for f in os.listdir(output_dir) if os.path.isfile(os.path.join(output_dir, f))]
+    # List all JSON files in the output directory
+    output_files = [f for f in os.listdir(output_dir) if os.path.isfile(os.path.join(output_dir, f)) and f.endswith('.json')]
     print("Available output files:")
     for i, file_name in enumerate(output_files):
         print(f"{i + 1}: {file_name}")
