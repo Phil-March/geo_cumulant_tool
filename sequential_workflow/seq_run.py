@@ -137,6 +137,9 @@ def compute_cumulants():
     selected_pair_file_path = os.path.join(output_dir, selected_pair_file_name)
     print(f"Selected pair file: {selected_pair_file_path}")
 
+    # Prompt user to enter the number of chunks for the merging operation
+    num_chunks = int(input("Please enter the number of chunks for the merging operation(limit memory usage): "))
+
     # Measure cumulative time for the entire process
     start_time = time.time()
 
@@ -151,11 +154,11 @@ def compute_cumulants():
 
     if num_dimensions == 2:
         print("Computing 3rd-order cumulant...")
-        cumulant_result = compute_3rd_order_cumulant(df_associated)
+        cumulant_result = compute_3rd_order_cumulant(df_associated, num_chunks)
         output_cumulant_file_name = f"seq_cum_3rd_{os.path.splitext(selected_data_file_name)[0]}.csv"
     elif num_dimensions == 3:
         print("Computing 4th-order cumulant...")
-        cumulant_result = compute_4th_order_cumulant(df_associated)
+        cumulant_result = compute_4th_order_cumulant(df_associated, num_chunks)
         output_cumulant_file_name = f"seq_cum_4th_{os.path.splitext(selected_data_file_name)[0]}.csv"
     else:
         raise ValueError(f"Unsupported number of dimensions: {num_dimensions}")
