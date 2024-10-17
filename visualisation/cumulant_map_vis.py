@@ -93,10 +93,13 @@ def update_heatmap(selected_n, selected_file):
                 df_dim1 = df.iloc[:, 1]
                 cumulant = df.iloc[:, 2]
 
-                grid_data = cumulant.values.reshape((df_dim0.max(), df_dim1.max()))
+                # Create a grid with None for missing values
+                grid_data = np.full((df_dim0.max(), df_dim1.max()), None)
+                for i in range(len(cumulant)):
+                    grid_data[df_dim0.iloc[i] - 1, df_dim1.iloc[i] - 1] = cumulant.iloc[i]
 
-                cumulant_min = cumulant.min()
-                cumulant_max = cumulant.max()
+                cumulant_min = np.nanmin(cumulant)
+                cumulant_max = np.nanmax(cumulant)
 
                 fig = go.Figure(data=go.Heatmap(
                                    z=grid_data,
@@ -122,10 +125,13 @@ def update_heatmap(selected_n, selected_file):
                 df_dim1 = df[df.iloc[:, 2] == selected_n].iloc[:, 1]
                 cumulant = df[df.iloc[:, 2] == selected_n].iloc[:, 3]
 
-                grid_data = cumulant.values.reshape((df_dim0.max(), df_dim1.max()))
+                # Create a grid with None for missing values
+                grid_data = np.full((df_dim0.max(), df_dim1.max()), None)
+                for i in range(len(cumulant)):
+                    grid_data[df_dim0.iloc[i] - 1, df_dim1.iloc[i] - 1] = cumulant.iloc[i]
 
-                cumulant_min = df.iloc[:, 3].min()
-                cumulant_max = df.iloc[:, 3].max()
+                cumulant_min = np.nanmin(cumulant)
+                cumulant_max = np.nanmax(cumulant)
 
                 fig = go.Figure(data=go.Heatmap(
                                    z=grid_data,
@@ -145,6 +151,7 @@ def update_heatmap(selected_n, selected_file):
                 )
                 return fig
     return go.Figure()
+
 
 if __name__ == '__main__':
     app.run_server(debug=True)
