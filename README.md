@@ -1,21 +1,21 @@
 # Geostatistical Cumulant Tool
 
-Welcome to the **Geostatistical Cumulant Tool** repository! This tool is designed to compute third and fourth-order cumulants, enabling geospacial analysis in 2 and 3 directions. The tool includes a search pairing algorithm for cumulant computation and provides visualization for third and fourth-order cumulant maps.
+Welcome to the **Geostatistical Cumulant Tool** repository! This tool is designed to compute third and fourth-order cumulants, enabling geospacial analysis in 2 and 3 directions. The tool includes a search occurrence algorithm for cumulant computation and provides visualization for third and fourth-order cumulant maps.
 
 ## Features
-- **Pairing Algorithm**: Efficient search pairing algorithm for accurate cumulant computation.
+- **Occurrence Algorithm**: Efficient search occurrence algorithm for accurate cumulant computation.
 - **Third-Order Cumulants**: Compute third-order cumulants in two directions.
 - **Fourth-Order Cumulants**: Compute fourth-order cumulants in three directions.
-- **Parallel and Sequential Execution**: Both the search pairing algorithm and cumulant computation can be executed in parallel or sequentially, providing flexibility based on your computational needs.
+- **Parallel and Sequential Execution**: Both the search occurrence algorithm and cumulant computation can be executed in parallel or sequentially, providing flexibility based on your computational needs.
 - **Cumulant Maps Visualization**: Visualize third and fourth-order cumulant maps for insightful geostatistical analysis.
 
 # Theory
 
-This section provides an overview of the theoretical concepts underlying the Geostatistical Computation Cumulant Tool, specifically focusing on the Search Pair Algorithm and Cumulant Computation.
+This section provides an overview of the theoretical concepts underlying the Geostatistical Computation Cumulant Tool, specifically focusing on the Search Occurrence Algorithm and Cumulant Computation.
 
-## Search Pair Algorithm
+## Search Occurrence Algorithm
 
-The **Search Pair Algorithm** is designed to identify and pair data points based on spatial relationships. The algorithm allows the user to input the following parameters:
+The **Search Occurrence Algorithm** is designed to identify and occurrence data points based on spatial relationships. The algorithm allows the user to input the following parameters:
 
 - **Number of Lags**
 - **Lag Distance**
@@ -32,10 +32,10 @@ These parameters enable the precise control of the spatial relationships in the 
 Below is a visual representation of the parameters and their spatial relationships:
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/a09ae3d3-e393-48a8-8c77-e0ec4ca5d4c3" alt="Search Pair Algorithm Parameters">
+  <img src="https://github.com/user-attachments/assets/a09ae3d3-e393-48a8-8c77-e0ec4ca5d4c3" alt="Search Occurrence Algorithm Parameters">
 </p>
 
-<p align="center"><strong>Figure 1</strong>: Spatial relationships and input parameters used in the Search Pair Algorithm.</p>
+<p align="center"><strong>Figure 1</strong>: Spatial relationships and input parameters used in the Search Occurrence Algorithm.</p>
 
 
 ## Cumulant Computation
@@ -88,10 +88,10 @@ pip install pandas numpy numba
 
 # How to Use
 
-## Search Pairs
+## Search Occurrences
 
 1. **Set Parameters:**
-   - Fill in the parameters for the search pair algoritm in the `search_parameters.json` file.
+   - Fill in the parameters for the search occurrence algoritm in the `search_parameters.json` file.
      
 2. **Prepare Data:**
    - Upload the CSV data file into the `input` folder. The file should follow the format: `X`, `Y`, `Z`, `GRADE` columns.
@@ -100,8 +100,8 @@ pip install pandas numpy numba
    - Navigate to either the `sequential` or `parallel` workflow folder.
    - Execute the `...run.py` file using Python.
 
-4. **Compute Pairs:**
-   - When prompted, select the option to compute pairs.
+4. **Compute Occurrences:**
+   - When prompted, select the option to compute occurrences.
 
 5. **Choose Directions:**
    - When prompted, choose the number of directions to be used (either 2 or 3).
@@ -121,8 +121,8 @@ pip install pandas numpy numba
 2. **Select Input Data:**
    - When prompted, select the original input data file.
 
-3. **Select Pairs File:**
-   - When prompted, select the associated generated pairs file.
+3. **Select Occurrences File:**
+   - When prompted, select the associated generated occurrences file.
 
 4. **Save Output:**
    - The output file will be saved as a CSV file in the `output` folder.
