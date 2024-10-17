@@ -94,9 +94,9 @@ def update_heatmap(selected_n, selected_file):
                 cumulant = df.iloc[:, 2]
 
                 # Create a grid with None for missing values
-                grid_data = np.full((df_dim0.max(), df_dim1.max()), None)
+                grid_data = np.full((df_dim1.max(), df_dim0.max()), None)
                 for i in range(len(cumulant)):
-                    grid_data[df_dim0.iloc[i] - 1, df_dim1.iloc[i] - 1] = cumulant.iloc[i]
+                    grid_data[df_dim1.iloc[i] - 1, df_dim0.iloc[i] - 1] = cumulant.iloc[i]
 
                 cumulant_min = np.nanmin(cumulant)
                 cumulant_max = np.nanmax(cumulant)
