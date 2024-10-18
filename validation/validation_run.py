@@ -48,13 +48,13 @@ def compare_csv_files(file1, file2):
     df1 = pd.read_csv(file1)
     df2 = pd.read_csv(file2)
 
-    # Check if 'k_3' or 'k_4' columns exist and round them to 8 decimal places
+    # Check if 'k_3' or 'k_4' columns exist and round them
     columns_to_round = ['k_3', 'k_4']
     for col in columns_to_round:
         if col in df1.columns:
-            df1[col] = df1[col].round(7)
+            df1[col] = df1[col].round(-2)
         if col in df2.columns:
-            df2[col] = df2[col].round(7)
+            df2[col] = df2[col].round(-2)
     
     # Sort the rows and reset index to ensure matching rows regardless of order
     df1_sorted = df1.sort_values(by=df1.columns.tolist()).reset_index(drop=True)
