@@ -96,14 +96,17 @@ def compute_3rd_order_cumulant(df_pairs, num_chunks):
     # Create cuDF DataFrame with the generated combinations
     df_generated = cudf.DataFrame(combinations, columns=columns)
 
-    # Split the df_generated into chunks using cupy
-    chunks = cp.array_split(df_generated.to_pandas(), num_chunks)  # Convert to pandas for array split compatibility with cupy
+    # Convert the cuDF DataFrame to CuPy arrays
+    df_generated_cupy = cp.asarray(df_generated.to_numpy())
+
+    # Split the data using CuPy array_split
+    chunks = cp.array_split(df_generated_cupy, num_chunks)
 
     # Process each chunk sequentially and store the results
     results = []
     for chunk in chunks:
-        chunk = cudf.DataFrame.from_pandas(chunk)  # Convert back to cuDF after splitting
-        chunk_result = process_chunk(chunk, df_pairs)
+        chunk_df = cudf.DataFrame(chunk, columns=columns)  # Convert the chunk back to cuDF DataFrame
+        chunk_result = process_chunk(chunk_df, df_pairs)
         results.append(chunk_result)
 
     # Concatenate all results using cuDF concat
