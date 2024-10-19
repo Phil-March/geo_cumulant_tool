@@ -117,6 +117,7 @@ def par_search_pairs_gen(data_vector, dim, nlag, lag, lag_tol, azm, azm_tol, ban
         pairs_host_total.append(pairs_host)
         pair_counts_host_total.append(pair_counts_host)
 
+    print("trying to concat")
     # Concatenate the lists to create final results as contiguous arrays
     pairs_host_total = np.concatenate(pairs_host_total, axis=0)
     pair_counts_host_total = np.concatenate(pair_counts_host_total, axis=0)
