@@ -8,7 +8,6 @@ from par_search_pairs_support import (
     par_distance_along_vertical_bandwidth,
     par_point_distance_to_shifted_plane)
 
-
 # Constants
 MAX_PAIRS = 1000  # Maximum number of pairs to store for each (point_id, dim_id, n) combination
 
@@ -65,9 +64,8 @@ def par_search_pairs_gen_kernel(data_vector, dim, nlag, lag, lag_tol, azm, azm_t
                         pairs[idx, dim_id, n, count] = potential_pair_id
                         pair_counts[idx, dim_id, n] += 1
 
-# Wrapper function to launch the kernel
-def par_search_pairs_gen(data_vector, dim, nlag, lag, lag_tol, azm, azm_tol, bandwh, dip, dip_tol, bandwv):
-    data_vector = cuda.to_device(data_vector)  # Ensure data is on the GPU
+# Wrapper function to launch the kernel with chunking
+def par_search_pairs_gen(data_vector, dim, nlag, lag, lag_tol, azm, azm_tol, bandwh, dip, dip_tol, bandwv, num_chunks):
     dim = np.array(dim, dtype=np.int32)
     nlag = np.array(nlag, dtype=np.int32)
     lag = np.array(lag, dtype=np.float64)
@@ -90,20 +88,41 @@ def par_search_pairs_gen(data_vector, dim, nlag, lag, lag_tol, azm, azm_tol, ban
     dip_tol = cuda.to_device(dip_tol)
     bandwv = cuda.to_device(bandwv)
 
-    pairs = cuda.device_array((data_vector.shape[0], len(dim), max(nlag) + 1, MAX_PAIRS), dtype=np.int32)
-    pair_counts = cuda.device_array((data_vector.shape[0], len(dim), max(nlag) + 1), dtype=np.int32)
-    threadsperblock = 256
-    blockspergrid = (data_vector.shape[0] + (threadsperblock - 1)) // threadsperblock
-    par_search_pairs_gen_kernel[blockspergrid, threadsperblock](data_vector, dim, nlag, lag, lag_tol, azm, azm_tol, bandwh, dip, dip_tol, bandwv, pairs, pair_counts)
-    pairs_host = pairs.copy_to_host()
-    pair_counts_host = pair_counts.copy_to_host()
+    # Split data into chunks
+    chunk_size = data_vector.shape[0] // num_chunks
+    pairs_host_total = []
+    pair_counts_host_total = []
+
+    for chunk in range(num_chunks):
+        start_idx = chunk * chunk_size
+        end_idx = (chunk + 1) * chunk_size if chunk != num_chunks - 1 else data_vector.shape[0]
+
+        data_chunk = data_vector[start_idx:end_idx, :]
+        data_chunk = cuda.to_device(data_chunk)
+
+        pairs = cuda.device_array((data_chunk.shape[0], len(dim), max(nlag) + 1, MAX_PAIRS), dtype=np.int32)
+        pair_counts = cuda.device_array((data_chunk.shape[0], len(dim), max(nlag) + 1), dtype=np.int32)
+        
+        threadsperblock = 256
+        blockspergrid = (data_chunk.shape[0] + (threadsperblock - 1)) // threadsperblock
+        par_search_pairs_gen_kernel[blockspergrid, threadsperblock](data_chunk, dim, nlag, lag, lag_tol, azm, azm_tol, bandwh, dip, dip_tol, bandwv, pairs, pair_counts)
+        
+        pairs_host = pairs.copy_to_host()
+        pair_counts_host = pair_counts.copy_to_host()
+
+        pairs_host_total.append(pairs_host)
+        pair_counts_host_total.append(pair_counts_host)
+
+    # Combine the results from all chunks
+    pairs_host_total = np.concatenate(pairs_host_total, axis=0)
+    pair_counts_host_total = np.concatenate(pair_counts_host_total, axis=0)
 
     # Extract non-zero pairs and their indices using NumPy
     non_zero_pairs = []
-    indices = np.nonzero(pair_counts_host)
+    indices = np.nonzero(pair_counts_host_total)
     for i, j, k in zip(*indices):
-        count = pair_counts_host[i, j, k]
+        count = pair_counts_host_total[i, j, k]
         for c in range(count):
-            non_zero_pairs.append((i + 1, j, k, pairs_host[i, j, k, c]))
+            non_zero_pairs.append((i + 1, j, k, pairs_host_total[i, j, k, c]))
     
     return non_zero_pairs

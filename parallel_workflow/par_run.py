@@ -33,6 +33,9 @@ def compute_pairs():
     # Prompt user for the input ndir
     ndir = int(input("Please select the value for ndir: "))
 
+    # Prompt user to enter the number of chunks
+    num_chunks = int(input("Please enter the number of chunks to split the dataset (e.g., 4): "))
+
     # Define the path to the search_parameters.json file
     script_dir = os.path.dirname(os.path.abspath(__file__))
     parent_dir = os.path.dirname(script_dir)
@@ -71,9 +74,9 @@ def compute_pairs():
     # Convert the DataFrame to a NumPy array
     data_vector = df.to_numpy()
 
-    # Get the pairs with parallel
+    # Get the pairs with parallel, using the provided number of chunks
     start_time_par = time.time()
-    par_pairs = par_search_pairs_gen(data_vector, dim, nlag, lag, lag_tol, azm, azm_tol, bandwh, dip, dip_tol, bandwv)
+    par_pairs = par_search_pairs_gen(data_vector, dim, nlag, lag, lag_tol, azm, azm_tol, bandwh, dip, dip_tol, bandwv, num_chunks=num_chunks)
     end_time_par = time.time()
     time_par = end_time_par - start_time_par
     print(f"Parallel function call completed in {time_par} seconds.")
@@ -93,7 +96,7 @@ def compute_pairs():
     par_pairs_df.to_json(output_file_path, orient='records', indent=4)
 
     print(f"Output saved to: {output_file_path}")
-
+    
 def compute_cumulants():
     # Define the path to the input and output directories
     script_dir = os.path.dirname(os.path.abspath(__file__))
