@@ -121,7 +121,7 @@ def par_search_pairs_gen(data_vector, dim, nlag, lag, lag_tol, azm, azm_tol, ban
     # Concatenate the lists to create final results as contiguous arrays
     pairs_host_total = np.concatenate(pairs_host_total, axis=0)
     pair_counts_host_total = np.concatenate(pair_counts_host_total, axis=0)
-
+    print("done concat")
     # Extract non-zero pairs and their indices using NumPy
     non_zero_pairs = []
     indices = np.nonzero(pair_counts_host_total)
