@@ -9,7 +9,7 @@ from par_search_pairs_support import (
     par_point_distance_to_shifted_plane)
 
 # Constants
-MAX_PAIRS = 1000  # Maximum number of pairs to store for each (point_id, dim_id, n) combination
+MAX_PAIRS = 100  # Maximum number of pairs to store for each (point_id, dim_id, n) combination
 
 # Main parallelized function
 @cuda.jit
