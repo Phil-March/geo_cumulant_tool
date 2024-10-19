@@ -107,7 +107,7 @@ def par_search_pairs_gen(data_vector, dim, nlag, lag, lag_tol, azm, azm_tol, ban
         pairs = cuda.device_array((data_chunk.shape[0], len(dim), max(nlag) + 1, MAX_PAIRS), dtype=np.int32)
         pair_counts = cuda.device_array((data_chunk.shape[0], len(dim), max(nlag) + 1), dtype=np.int32)
         
-        threadsperblock = 256
+        threadsperblock = 128
         blockspergrid = (data_chunk.shape[0] + (threadsperblock - 1)) // threadsperblock
         par_search_pairs_gen_kernel[blockspergrid, threadsperblock](data_chunk, dim, nlag, lag, lag_tol, azm, azm_tol, bandwh, dip, dip_tol, bandwv, pairs, pair_counts)
         
