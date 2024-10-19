@@ -76,7 +76,8 @@ def par_search_pairs_gen(data_vector, dim, nlag, lag, lag_tol, azm, azm_tol, ban
     dip = np.array(dip, dtype=np.float64)
     dip_tol = np.array(dip_tol, dtype=np.float64)
     bandwv = np.array(bandwv, dtype=np.float64)
-    
+
+    # Transfer the arrays to GPU memory only once
     dim = cuda.to_device(dim)
     nlag = cuda.to_device(nlag)
     lag = cuda.to_device(lag)
@@ -98,6 +99,9 @@ def par_search_pairs_gen(data_vector, dim, nlag, lag, lag_tol, azm, azm_tol, ban
         end_idx = (chunk + 1) * chunk_size if chunk != num_chunks - 1 else data_vector.shape[0]
 
         data_chunk = data_vector[start_idx:end_idx, :]
+        
+        # Ensure data_chunk is contiguous in memory
+        data_chunk = np.ascontiguousarray(data_chunk)
         data_chunk = cuda.to_device(data_chunk)
 
         pairs = cuda.device_array((data_chunk.shape[0], len(dim), max(nlag) + 1, MAX_PAIRS), dtype=np.int32)
@@ -113,7 +117,7 @@ def par_search_pairs_gen(data_vector, dim, nlag, lag, lag_tol, azm, azm_tol, ban
         pairs_host_total.append(pairs_host)
         pair_counts_host_total.append(pair_counts_host)
 
-    # Combine the results from all chunks
+    # Concatenate the lists to create final results as contiguous arrays
     pairs_host_total = np.concatenate(pairs_host_total, axis=0)
     pair_counts_host_total = np.concatenate(pair_counts_host_total, axis=0)
 
