@@ -129,7 +129,7 @@ def par_search_pairs_gen(data_vector, dim, nlag, lag, lag_tol, azm, azm_tol, ban
     indices = cp.nonzero(pair_counts_host_total)
     
     for i, j, k in zip(*indices):
-        count = pair_counts_host_total[i, j, k]
+        count = pair_counts_host_total[i, j, k].item()
         for c in range(count):
             non_zero_pairs.append((i + 1, j, k, pairs_host_total[i, j, k, c]))
     
