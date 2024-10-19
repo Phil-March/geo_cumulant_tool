@@ -111,23 +111,29 @@ def par_search_pairs_gen(data_vector, dim, nlag, lag, lag_tol, azm, azm_tol, ban
         blockspergrid = (data_chunk.shape[0] + (threadsperblock - 1)) // threadsperblock
         par_search_pairs_gen_kernel[blockspergrid, threadsperblock](data_chunk, dim, nlag, lag, lag_tol, azm, azm_tol, bandwh, dip, dip_tol, bandwv, pairs, pair_counts)
         
-        pairs_host = pairs.copy_to_host()
-        pair_counts_host = pair_counts.copy_to_host()
+        # Copy back to host as CuPy arrays instead of NumPy arrays
+        pairs_host = cp.asarray(pairs.copy_to_host())
+        pair_counts_host = cp.asarray(pair_counts.copy_to_host())
 
         pairs_host_total.append(pairs_host)
         pair_counts_host_total.append(pair_counts_host)
 
     print("trying to concat")
-    # Concatenate the lists to create final results as contiguous arrays
+    # Concatenate the lists to create final results as contiguous arrays using CuPy
     pairs_host_total = cp.concatenate(pairs_host_total, axis=0)
     pair_counts_host_total = cp.concatenate(pair_counts_host_total, axis=0)
     print("done concat")
-    # Extract non-zero pairs and their indices using NumPy
+    
+    # Extract non-zero pairs and their indices using CuPy
     non_zero_pairs = []
-    indices = np.nonzero(pair_counts_host_total)
+    indices = cp.nonzero(pair_counts_host_total)
+    
     for i, j, k in zip(*indices):
         count = pair_counts_host_total[i, j, k]
         for c in range(count):
             non_zero_pairs.append((i + 1, j, k, pairs_host_total[i, j, k, c]))
+    
+    # Convert non-zero pairs back to NumPy if necessary for further processing
+    non_zero_pairs = cp.asnumpy(non_zero_pairs)
     
     return non_zero_pairs
