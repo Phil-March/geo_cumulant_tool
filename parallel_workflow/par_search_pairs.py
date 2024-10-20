@@ -119,16 +119,16 @@ def par_search_pairs_gen(data_vector, dim, nlag, lag, lag_tol, azm, azm_tol, ban
         pair_counts_host_total.append(pair_counts_host)
 
     print("trying to concat")
-    # Concatenate the lists to create final results as contiguous arrays
-    pairs_host_total = np.concatenate(pairs_host_total, axis=0)
-    pair_counts_host_total = np.concatenate(pair_counts_host_total, axis=0)
+    # Concatenate the lists to create final results as contiguous arrays using CuPy
+    pairs_host_total = cp.concatenate(pairs_host_total, axis=0)
+    pair_counts_host_total = cp.concatenate(pair_counts_host_total, axis=0)
     print("done concat")
     
     # Extract non-zero pairs and their indices using NumPy
     non_zero_pairs = []
     indices = np.nonzero(pair_counts_host_total)
     for i, j, k in zip(*indices):
-        count = pair_counts_host_total[i, j, k]
+        count = pair_counts_host_total[i, j, k].item()
         for c in range(count):
             non_zero_pairs.append((i + 1, j, k, pairs_host_total[i, j, k, c]))
     
