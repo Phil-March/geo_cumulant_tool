@@ -9,7 +9,7 @@ from par_search_pairs_support import (
     par_point_distance_to_shifted_plane)
 
 # Constants
-MAX_PAIRS = 100  # Maximum number of pairs to store for each (point_id, dim_id, n) combination
+MAX_PAIRS = 1000  # Maximum number of pairs to store for each (point_id, dim_id, n) combination
 
 # Main parallelized function
 @cuda.jit
@@ -107,7 +107,7 @@ def par_search_pairs_gen(data_vector, dim, nlag, lag, lag_tol, azm, azm_tol, ban
         pairs = cuda.device_array((data_chunk.shape[0], len(dim), max(nlag) + 1, MAX_PAIRS), dtype=np.int32)
         pair_counts = cuda.device_array((data_chunk.shape[0], len(dim), max(nlag) + 1), dtype=np.int32)
         
-        threadsperblock = 128
+        threadsperblock = 256
         blockspergrid = (data_chunk.shape[0] + (threadsperblock - 1)) // threadsperblock
         par_search_pairs_gen_kernel[blockspergrid, threadsperblock](data_chunk, dim, nlag, lag, lag_tol, azm, azm_tol, bandwh, dip, dip_tol, bandwv, pairs, pair_counts)
         
