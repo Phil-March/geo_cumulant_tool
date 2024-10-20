@@ -112,16 +112,16 @@ def par_search_pairs_gen(data_vector, dim, nlag, lag, lag_tol, azm, azm_tol, ban
         par_search_pairs_gen_kernel[blockspergrid, threadsperblock](data_chunk, dim, nlag, lag, lag_tol, azm, azm_tol, bandwh, dip, dip_tol, bandwv, pairs, pair_counts)
         
         # Copy back to host as CuPy arrays instead of NumPy arrays
-        pairs_host = cp.asarray(pairs.copy_to_host())
-        pair_counts_host = cp.asarray(pair_counts.copy_to_host())
+        pairs_host = np.asarray(pairs.copy_to_host())
+        pair_counts_host = np.asarray(pair_counts.copy_to_host())
 
         pairs_host_total.append(pairs_host)
         pair_counts_host_total.append(pair_counts_host)
 
     print("trying to concat")
     # Concatenate the lists to create final results as contiguous arrays using CuPy
-    pairs_host_total = cp.concatenate(pairs_host_total, axis=0)
-    pair_counts_host_total = cp.concatenate(pair_counts_host_total, axis=0)
+    pairs_host_total = np.concatenate(pairs_host_total, axis=0)
+    pair_counts_host_total = np.concatenate(pair_counts_host_total, axis=0)
     print("done concat")
     
     # Extract non-zero pairs and their indices using NumPy
