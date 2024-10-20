@@ -6,7 +6,7 @@ import time
 import os
 from par_search_pairs import par_search_pairs_gen
 from par_cumulants import (center_grades, associate_grade, compute_3rd_order_cumulant, compute_4th_order_cumulant)
-
+import subprocess
 def load_parameters(ndir, file_name):
     # Load JSON file
     with open(file_name, 'r') as file:
@@ -179,8 +179,15 @@ def compute_cumulants():
     print(f"Total time for computing cumulants: {end_time - start_time:.2f} seconds.")
     print(f"Cumulant results saved to: {output_cumulant_file_path}")
 
+# Function to run nvidia-smi and display the output
+def monitor_gpu():
+    print("Launching nvidia-smi to monitor GPU usage:")
+    # Run the nvidia-smi command and display the output
+    subprocess.run(['nvidia-smi'])
+
 def main():
     while True:
+        monitor_gpu()
         print("\nMenu:")
         print("1. Compute pairs")
         print("2. Compute cumulants from pairs")
