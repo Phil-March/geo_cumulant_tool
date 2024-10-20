@@ -2,6 +2,9 @@ import cudf
 import cupy as cp
 import itertools
 
+cp.cuda.set_allocator(cp.cuda.MemoryPool().malloc)
+
+
 def center_grades(data_file):
     # Load the data
     df_data = cudf.read_csv(data_file)
