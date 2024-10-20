@@ -6,7 +6,7 @@ from mpl_toolkits.mplot3d import Axes3D
 df = pd.read_csv('input/walker_lake.csv')
 
 # Filter rows where 'Y', 'X', and 'Z' are within specified ranges
-df_filtered = df[(df['Y'] >= 40) & (df['Y'] <= 140) & (df['X'] >= 0) & (df['X'] <= 100) & (df['Z'] >= 20) & (df['Z'] <= 50)]
+df_filtered = df[(df['Y'] >= 40) & (df['Y'] <= 100) & (df['X'] >= 0) & (df['X'] <= 60) & (df['Z'] >= 20) & (df['Z'] <= 50)]
 
 # Group the points into 10x10x10 cubes
 df_filtered['X_group'] = (df_filtered['X'] // 10).astype(int)

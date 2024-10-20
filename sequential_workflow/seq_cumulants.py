@@ -192,7 +192,14 @@ def compute_4th_order_cumulant(df_pairs, num_chunks):
 
     # Process each chunk sequentially and store the results
     results = []
-    for chunk in chunks:
+    total_chunks = len(chunks)  # Get the total number of chunks
+
+    for i, chunk in enumerate(chunks):
+        # Calculate and print the percentage of completion
+        percent_complete = (i + 1) / total_chunks * 100
+        print(f"Processing chunk {i + 1}/{total_chunks} ({percent_complete:.2f}% complete)")
+
+        # Process the chunk and store the result
         chunk_result = process_chunk(chunk, df_pairs)
         results.append(chunk_result)
 
