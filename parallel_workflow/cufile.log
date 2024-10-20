@@ -60,3 +60,33 @@
  20-10-2024 01:32:23:296 [pid=3445 tid=3445] ERROR  cufio-fs:68 mount options not specified for device in mount table /dev/sda1
  20-10-2024 01:32:39:793 [pid=3471 tid=3471] NOTICE  cufio-drv:720 running in compatible mode
  20-10-2024 01:32:40:203 [pid=3471 tid=3471] ERROR  cufio-fs:68 mount options not specified for device in mount table /dev/sda1
+ 20-10-2024 01:48:35:570 [pid=3546 tid=3546] NOTICE  cufio-drv:720 running in compatible mode
+ 20-10-2024 01:48:35:979 [pid=3546 tid=3546] ERROR  cufio-fs:68 mount options not specified for device in mount table /dev/sda1
+ 20-10-2024 01:49:07:269 [pid=3571 tid=3571] NOTICE  cufio-drv:720 running in compatible mode
+ 20-10-2024 01:49:07:679 [pid=3571 tid=3571] ERROR  cufio-fs:68 mount options not specified for device in mount table /dev/sda1
+ 20-10-2024 01:49:59:955 [pid=3600 tid=3600] NOTICE  cufio-drv:720 running in compatible mode
+ 20-10-2024 01:50:00:366 [pid=3600 tid=3600] ERROR  cufio-fs:68 mount options not specified for device in mount table /dev/sda1
+ 20-10-2024 01:51:55:995 [pid=3628 tid=3628] NOTICE  cufio-drv:720 running in compatible mode
+ 20-10-2024 01:51:56:405 [pid=3628 tid=3628] ERROR  cufio-fs:68 mount options not specified for device in mount table /dev/sda1
+ 20-10-2024 01:54:36:528 [pid=3653 tid=3653] NOTICE  cufio-drv:720 running in compatible mode
+ 20-10-2024 01:54:36:939 [pid=3653 tid=3653] ERROR  cufio-fs:68 mount options not specified for device in mount table /dev/sda1
+ 20-10-2024 01:59:30:326 [pid=3682 tid=3682] NOTICE  cufio-drv:720 running in compatible mode
+ 20-10-2024 01:59:30:737 [pid=3682 tid=3682] ERROR  cufio-fs:68 mount options not specified for device in mount table /dev/sda1
+ 20-10-2024 02:14:18:22 [pid=3762 tid=3762] NOTICE  cufio-drv:720 running in compatible mode
+ 20-10-2024 02:14:18:434 [pid=3762 tid=3762] ERROR  cufio-fs:68 mount options not specified for device in mount table /dev/sda1
+ 20-10-2024 02:14:55:74 [pid=3787 tid=3787] NOTICE  cufio-drv:720 running in compatible mode
+ 20-10-2024 02:14:55:486 [pid=3787 tid=3787] ERROR  cufio-fs:68 mount options not specified for device in mount table /dev/sda1
+ 20-10-2024 02:15:25:863 [pid=3820 tid=3820] NOTICE  cufio-drv:720 running in compatible mode
+ 20-10-2024 02:15:26:274 [pid=3820 tid=3820] ERROR  cufio-fs:68 mount options not specified for device in mount table /dev/sda1
+ 20-10-2024 02:16:18:769 [pid=3845 tid=3845] NOTICE  cufio-drv:720 running in compatible mode
+ 20-10-2024 02:16:19:179 [pid=3845 tid=3845] ERROR  cufio-fs:68 mount options not specified for device in mount table /dev/sda1
+ 20-10-2024 02:17:14:966 [pid=3870 tid=3870] NOTICE  cufio-drv:720 running in compatible mode
+ 20-10-2024 02:17:15:377 [pid=3870 tid=3870] ERROR  cufio-fs:68 mount options not specified for device in mount table /dev/sda1
+ 20-10-2024 02:18:26:581 [pid=3899 tid=3899] NOTICE  cufio-drv:720 running in compatible mode
+ 20-10-2024 02:18:26:992 [pid=3899 tid=3899] ERROR  cufio-fs:68 mount options not specified for device in mount table /dev/sda1
+ 20-10-2024 02:21:19:258 [pid=3929 tid=3929] NOTICE  cufio-drv:720 running in compatible mode
+ 20-10-2024 02:21:19:670 [pid=3929 tid=3929] ERROR  cufio-fs:68 mount options not specified for device in mount table /dev/sda1
+ 20-10-2024 02:23:33:358 [pid=3956 tid=3956] NOTICE  cufio-drv:720 running in compatible mode
+ 20-10-2024 02:23:33:770 [pid=3956 tid=3956] ERROR  cufio-fs:68 mount options not specified for device in mount table /dev/sda1
+ 20-10-2024 02:26:53:725 [pid=4054 tid=4054] NOTICE  cufio-drv:720 running in compatible mode
+ 20-10-2024 02:26:54:137 [pid=4054 tid=4054] ERROR  cufio-fs:68 mount options not specified for device in mount table /dev/sda1
