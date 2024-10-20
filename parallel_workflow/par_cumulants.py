@@ -104,10 +104,18 @@ def compute_3rd_order_cumulant(df_pairs, num_chunks):
 
     # Process each chunk sequentially and store the results
     results = []
-    for chunk in chunks:
+    total_chunks = len(chunks)  # Get the total number of chunks
+
+    for idx, chunk in enumerate(chunks):
+        # Calculate the percentage of completion
+        percentage_complete = (idx + 1) / total_chunks * 100
+
         chunk_df = cudf.DataFrame(chunk, columns=columns)  # Convert the chunk back to cuDF DataFrame
         chunk_result = process_chunk(chunk_df, df_pairs)
         results.append(chunk_result)
+
+        # Print percentage completion
+        print(f"Processing: {percentage_complete:.2f}% complete")
 
     # Concatenate all results using cuDF concat
     concatenated_result = cudf.concat(results)
